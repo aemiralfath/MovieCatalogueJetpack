@@ -56,6 +56,5 @@ class DetailMovieViewModelTest {
         assertEquals(dummyMovie.originalLanguage, movie.originalLanguage)
         assertEquals(dummyMovie.popularity, movie.popularity)
         assertEquals(dummyMovie.voteCount, movie.voteCount)
-        assertEquals(dummyMovie.voteCount, movie.voteCount)
     }
 }
