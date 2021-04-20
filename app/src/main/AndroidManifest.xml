@@ -23,14 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.tv.DetailTvActivity"
+            android:name="com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvActivity"
             android:parentActivityName=".ui.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.movie.DetailMovieActivity"
+            android:name="com.aemiralfath.moviecatalogue.ui.detail.movie.DetailMovieActivity"
             android:parentActivityName=".ui.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

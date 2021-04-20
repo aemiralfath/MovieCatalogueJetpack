@@ -1,8 +1,6 @@
-package com.aemiralfath.moviecatalogue.ui.main
+package com.aemiralfath.moviecatalogue.ui.movie
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +18,7 @@ class MainViewModel : ViewModel() {
     private var dataMovie: MutableLiveData<MovieEntity> = MutableLiveData()
     private var dataTv: MutableLiveData<TvEntity> = MutableLiveData()
 
-    fun setMovie(context: Context) {
+    fun setMovie() {
         ServiceClient().buildServiceClient()
             .getMovie(token)
             .enqueue(object : Callback<MovieEntity> {
@@ -31,13 +29,12 @@ class MainViewModel : ViewModel() {
 
                 override fun onFailure(call: Call<MovieEntity>, t: Throwable) {
                     Log.d("MovieGet", "Fail")
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
 
             })
     }
 
-    fun setTv(context: Context) {
+    fun setTv() {
         ServiceClient().buildServiceClient()
             .geTvShow(token)
             .enqueue(object : Callback<TvEntity> {
@@ -48,7 +45,6 @@ class MainViewModel : ViewModel() {
 
                 override fun onFailure(call: Call<TvEntity>, t: Throwable) {
                     Log.d("TvGet", "Fail")
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 }
 
             })

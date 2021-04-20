@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.ui.movie
+package com.aemiralfath.moviecatalogue.ui.detail.movie
 
 import androidx.lifecycle.ViewModel
 import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity

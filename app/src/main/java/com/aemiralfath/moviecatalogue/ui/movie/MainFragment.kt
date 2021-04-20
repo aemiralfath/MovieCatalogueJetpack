@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.ui.main
+package com.aemiralfath.moviecatalogue.ui.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,7 +35,7 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         tabIndex = arguments?.getInt(ARG_SECTION_NUMBER) ?: 1
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java).apply {
-            if (tabIndex == 1) setMovie(requireContext()) else setTv(requireContext())
+            if (tabIndex == 1) setMovie() else setTv()
         }
     }
 
@@ -52,18 +52,28 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            with(binding.rvHome) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
 
-                if (tabIndex == 1) {
+            if (tabIndex == 1) {
+                binding.rvHomeTv.visibility = View.GONE
+
+                with(binding.rvHomeMovie) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+
                     mainViewModel.getMovie().observe(viewLifecycleOwner, {
                         val movieAdapter = MovieAdapter()
                         movieAdapter.setMovie(it)
                         adapter = movieAdapter
                         showLoading(false)
                     })
-                } else {
+                }
+            } else {
+                binding.rvHomeMovie.visibility = View.GONE
+
+                with(binding.rvHomeTv) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+
                     mainViewModel.getTv().observe(viewLifecycleOwner, {
                         val tvAdapter = TvAdapter()
                         tvAdapter.setTv(it)
@@ -72,7 +82,6 @@ class MainFragment : Fragment() {
                     })
                 }
             }
-
         }
     }
 

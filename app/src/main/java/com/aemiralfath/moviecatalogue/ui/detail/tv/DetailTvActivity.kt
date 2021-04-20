@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.ui.tv
+package com.aemiralfath.moviecatalogue.ui.detail.tv
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

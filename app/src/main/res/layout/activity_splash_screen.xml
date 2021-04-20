@@ -9,7 +9,7 @@
     tools:context=".ui.splashscreen.SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_splashscreen"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerInside"

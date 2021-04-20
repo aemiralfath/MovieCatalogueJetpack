@@ -8,7 +8,7 @@ import com.aemiralfath.moviecatalogue.R
 import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
 import com.aemiralfath.moviecatalogue.data.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
-import com.aemiralfath.moviecatalogue.ui.tv.DetailTvActivity
+import com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
