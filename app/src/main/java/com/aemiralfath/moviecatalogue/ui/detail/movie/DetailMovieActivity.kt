@@ -37,7 +37,7 @@ class DetailMovieActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         with(binding) {
-            tvTitle.text = movie.originalTitle
+            tvMovieTitle.text = movie.originalTitle
             tvMovieDate.text = movie.releaseDate
             tvMovieRating.text = rating
             tvOverview.text = movie.overview

@@ -37,7 +37,7 @@ class DetailTvActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         with(binding) {
-            tvTitle.text = tv.originalName
+            tvTvTitle.text = tv.originalName
             tvTvDate.text = tv.firstAirDate
             tvTvRating.text = rating
             tvOverview.text = tv.overview

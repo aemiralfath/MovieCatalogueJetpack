@@ -84,12 +84,9 @@ class SplashScreenActivityTest {
         )
 
         onView(withId(R.id.img_movie_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_title)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_movie_date)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_movie_rating)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_movie_language)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_movie_adult)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_movie_popularity)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_movie_vote)).check(matches(isDisplayed()))
 
         pressBack()
     }
@@ -113,10 +110,9 @@ class SplashScreenActivityTest {
         )
 
         onView(withId(R.id.img_tv_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_tv_title)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_tv_date)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_tv_rating)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_tv_language)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_tv_popularity)).check(matches(isDisplayed()))
 
         pressBack()
     }
