@@ -2,9 +2,10 @@ package com.aemiralfath.moviecatalogue.ui.movie
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.entity.ResultsItemMovie
+import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
 import com.aemiralfath.moviecatalogue.databinding.ActivityDetailMovieBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -26,7 +27,7 @@ class DetailMovieActivity : AppCompatActivity() {
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(DetailMovieViewModel::class.java).apply {
-            intent.getParcelableExtra<ResultsItemMovie>(EXTRA_MOVIE)?.let { setMovie(it) }
+            intent.getParcelableExtra<ItemMovieEntity>(EXTRA_MOVIE)?.let { setMovie(it) }
         }
 
         val movie = viewModel.getMovie()
@@ -45,13 +46,22 @@ class DetailMovieActivity : AppCompatActivity() {
             tvMoviePopularity.text = movie.popularity.toString()
             tvMovieVote.text = movie.voteCount.toString()
 
-            Glide.with(applicationContext)
+            Glide.with(this@DetailMovieActivity)
                 .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
                 .apply(
                     RequestOptions.placeholderOf(R.drawable.ic_loading)
                         .error(R.drawable.ic_error)
                 )
                 .into(imgMoviePoster)
+
+            btnMovieShare.setOnClickListener{
+                ShareCompat.IntentBuilder
+                    .from(this@DetailMovieActivity)
+                    .setType("text/plain")
+                    .setChooserTitle(R.string.share_tv)
+                    .setText(resources.getString(R.string.share_text, movie.title))
+                    .startChooser()
+            }
         }
     }
 }

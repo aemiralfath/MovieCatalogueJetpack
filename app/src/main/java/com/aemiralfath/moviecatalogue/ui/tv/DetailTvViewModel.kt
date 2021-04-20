@@ -1,16 +1,16 @@
 package com.aemiralfath.moviecatalogue.ui.tv
 
 import androidx.lifecycle.ViewModel
-import com.aemiralfath.moviecatalogue.data.entity.ResultsItemTv
+import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
 
 class DetailTvViewModel : ViewModel() {
-    private lateinit var tv: ResultsItemTv
+    private lateinit var tv: ItemTvEntity
 
-    fun setTv(tv: ResultsItemTv) {
+    fun setTv(tv: ItemTvEntity) {
         this.tv = tv
     }
 
-    fun getTv(): ResultsItemTv {
+    fun getTv(): ItemTvEntity {
         return tv
     }
 }

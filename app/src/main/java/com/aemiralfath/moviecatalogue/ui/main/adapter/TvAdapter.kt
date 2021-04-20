@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.entity.ResultsItemTv
+import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
 import com.aemiralfath.moviecatalogue.data.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.tv.DetailTvActivity
@@ -38,7 +38,7 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
 
     class TvViewHolder(private val binding: ItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tv: ResultsItemTv?) {
+        fun bind(tv: ItemTvEntity?) {
             with(binding) {
                 tvItemTitle.text = tv?.originalName
                 tvItemDate.text = tv?.firstAirDate
