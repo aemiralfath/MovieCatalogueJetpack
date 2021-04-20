@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.ui.movie
+package com.aemiralfath.moviecatalogue.ui.tv
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class TvViewModel : ViewModel() {
 
     private val token = TMDB_API_KEY
     private var dataMovie: MutableLiveData<MovieEntity> = MutableLiveData()

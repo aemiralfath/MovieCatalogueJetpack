@@ -4,16 +4,19 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.aemiralfath.moviecatalogue.R
-import org.hamcrest.Matchers.allOf
+import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,36 +26,105 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class SplashScreenActivityTest {
 
+    @get:Rule
+    var activityRule = ActivityScenarioRule(SplashScreenActivity::class.java)
+
     @Before
     fun setUp() {
         ActivityScenario.launch(SplashScreenActivity::class.java)
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
     }
 
-    @get:Rule
-    var activityRule = ActivityScenarioRule(SplashScreenActivity::class.java)
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
+    }
 
     @Test
     fun loadMovie() {
         //splash screen
-        onView(ViewMatchers.withId(R.id.img_splashscreen))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(isRoot()).perform(waitFor())
+        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
+        onView(isRoot()).perform(waitForSplashscreen())
 
-
-        onView(allOf(ViewMatchers.withId(R.id.rv_home_movie)))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-//        onView(ViewMatchers.withId(R.id.rv_home_movie)).perform(
-//            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-//                20
-//            )
-//        )
+        //movie
+        onView(withId(R.id.rv_home_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_home_movie)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
+        )
     }
 
-    private fun waitFor(): ViewAction {
+    @Test
+    fun loadTv() {
+        //splash screen
+        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
+        onView(isRoot()).perform(waitForSplashscreen())
+
+        //tv show
+        onView(withText(R.string.tab_text_2)).perform(click())
+        onView(withId(R.id.rv_home_tv)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_home_tv)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
+        )
+    }
+
+    @Test
+    fun loadDetailMovie() {
+        //splash screen
+        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
+        onView(isRoot()).perform(waitForSplashscreen())
+
+        //movie
+        onView(withId(R.id.rv_home_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_home_movie)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
+        )
+
+        onView(withId(R.id.rv_home_movie)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(10, click())
+        )
+
+        onView(withId(R.id.img_movie_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_rating)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_language)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_adult)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_popularity)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_movie_vote)).check(matches(isDisplayed()))
+
+        pressBack()
+    }
+
+    @Test
+    fun loadDetailTv() {
+        //splash screen
+        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
+        onView(isRoot()).perform(waitForSplashscreen())
+
+        //tv show
+        onView(withText(R.string.tab_text_2)).perform(click())
+        onView(withId(R.id.rv_home_tv))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.rv_home_tv)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
+        )
+
+        onView(withId(R.id.rv_home_tv)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(10, click())
+        )
+
+        onView(withId(R.id.img_tv_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_tv_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_tv_rating)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_tv_language)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_tv_popularity)).check(matches(isDisplayed()))
+
+        pressBack()
+    }
+
+    private fun waitForSplashscreen(): ViewAction {
         return object : ViewAction {
             override fun getConstraints(): org.hamcrest.Matcher<View> {
-                return isRoot();
+                return isRoot()
             }
 
             override fun getDescription(): String {

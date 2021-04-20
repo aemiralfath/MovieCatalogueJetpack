@@ -1,7 +1,7 @@
-package com.aemiralfath.moviecatalogue.ui.main
+package com.aemiralfath.moviecatalogue.ui.home
 
 import android.os.Build
-import com.aemiralfath.moviecatalogue.ui.movie.MainViewModel
+import com.aemiralfath.moviecatalogue.ui.movie.MovieViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,13 +14,13 @@ import org.robolectric.annotation.LooperMode
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 @LooperMode(LooperMode.Mode.PAUSED)
-class MainViewModelTest {
+class TvViewModelTest {
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MovieViewModel
 
     @Before
     fun setUp() {
-        viewModel = MainViewModel()
+        viewModel = MovieViewModel()
     }
 
     @Test

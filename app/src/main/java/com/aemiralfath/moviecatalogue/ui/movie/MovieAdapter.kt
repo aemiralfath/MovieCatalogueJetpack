@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.ui.main.adapter
+package com.aemiralfath.moviecatalogue.ui.movie
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import com.aemiralfath.moviecatalogue.data.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.detail.movie.DetailMovieActivity
+import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -19,6 +20,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     fun setMovie(movie: MovieEntity) {
         if (movie.results?.isEmpty() == true) return
         this.listMovie = movie
+        EspressoIdlingResource.decrement()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

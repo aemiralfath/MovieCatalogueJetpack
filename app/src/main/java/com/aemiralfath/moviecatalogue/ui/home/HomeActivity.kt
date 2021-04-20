@@ -1,16 +1,15 @@
-package com.aemiralfath.moviecatalogue.ui.main
+package com.aemiralfath.moviecatalogue.ui.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.aemiralfath.moviecatalogue.databinding.ActivityMainBinding
-import com.aemiralfath.moviecatalogue.ui.main.adapter.SectionsPagerAdapter
+import com.aemiralfath.moviecatalogue.databinding.ActivityHomeBinding
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        val binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)

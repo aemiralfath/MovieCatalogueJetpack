@@ -2,9 +2,13 @@ package com.aemiralfath.moviecatalogue.ui.detail.movie
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
+import com.aemiralfath.moviecatalogue.R
 import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
 import com.aemiralfath.moviecatalogue.databinding.ActivityDetailMovieBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 class DetailMovieActivity : AppCompatActivity() {
 

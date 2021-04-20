@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.ui.main.adapter
+package com.aemiralfath.moviecatalogue.ui.tv
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
 import com.aemiralfath.moviecatalogue.data.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvActivity
+import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -18,6 +19,7 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
     fun setTv(tv: TvEntity) {
         if (tv.results?.isEmpty() == true) return
         this.listTv = tv
+        EspressoIdlingResource.decrement()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
