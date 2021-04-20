@@ -16,7 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String" , "TMDB_API_KEY" , '"4c6b99dfcd747c39e86b3552395539e2"')
+        buildConfigField("String", "TMDB_API_KEY", '"4c6b99dfcd747c39e86b3552395539e2"')
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -74,8 +74,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junitExtversion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 
-    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
-    testImplementation 'org.robolectric:robolectric:4.4'
-    testImplementation 'org.mockito:mockito-core:3.6.0'
-    testImplementation 'org.mockito:mockito-inline:3.6.0'
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$espressoIdlingVersion"
+    testImplementation "org.robolectric:robolectric:$roboelectricVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
 }

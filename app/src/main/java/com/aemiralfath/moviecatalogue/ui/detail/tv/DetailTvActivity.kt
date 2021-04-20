@@ -53,7 +53,7 @@ class DetailTvActivity : AppCompatActivity() {
                 )
                 .into(imgTvPoster)
 
-            btnTvShare.setOnClickListener{
+            btnTvShare.setOnClickListener {
                 ShareCompat.IntentBuilder
                     .from(this@DetailTvActivity)
                     .setType("text/plain")

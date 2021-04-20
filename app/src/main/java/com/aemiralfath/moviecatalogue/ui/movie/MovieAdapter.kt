@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
+import com.aemiralfath.moviecatalogue.data.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.detail.movie.DetailMovieActivity
 import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource

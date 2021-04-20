@@ -2,10 +2,10 @@ package com.aemiralfath.moviecatalogue.ui.detail.movie
 
 import android.os.Build
 import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config

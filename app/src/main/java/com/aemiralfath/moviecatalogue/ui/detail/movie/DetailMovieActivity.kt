@@ -54,7 +54,7 @@ class DetailMovieActivity : AppCompatActivity() {
                 )
                 .into(imgMoviePoster)
 
-            btnMovieShare.setOnClickListener{
+            btnMovieShare.setOnClickListener {
                 ShareCompat.IntentBuilder
                     .from(this@DetailMovieActivity)
                     .setType("text/plain")

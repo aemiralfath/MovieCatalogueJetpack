@@ -7,7 +7,6 @@
         android:right="0dp"
         android:top="0dp" />
 
-
     <item
         android:bottom="20dp"
         android:drawable="@drawable/ic_broken_image_black"

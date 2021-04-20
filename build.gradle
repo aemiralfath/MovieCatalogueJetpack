@@ -20,6 +20,10 @@ buildscript {
         retrofitVersion = '2.9.0'
         loggingVersion = '4.8.1'
         annotationVersion = '10.0-b28'
+
+        roboelectricVersion = '4.4'
+        mockitoVersion = '3.6.0'
+        espressoIdlingVersion = '3.0.2'
     }
 
     repositories {
