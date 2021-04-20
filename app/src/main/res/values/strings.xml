@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="tab_text_1">Movie</string>
+    <string name="tab_text_2">Tv Show</string>
+    <string name="title">Title</string>
+    <string name="date">date</string>
+    <string name="overview">Overview</string>
+    <string name="poster">Poster</string>
+    <string name="data_image">Data Image</string>
+    <string name="rating_image">Rating Image</string>
+    <string name="popularity">Popularity</string>
+    <string name="adult">Adult</string>
+    <string name="vote_count">Vote Count</string>
+    <string name="language">Language</string>
+    <string name="detail">Detail</string>
+</resources>
