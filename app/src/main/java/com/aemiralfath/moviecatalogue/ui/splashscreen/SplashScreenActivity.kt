@@ -9,6 +9,11 @@ import com.aemiralfath.moviecatalogue.R
 import com.aemiralfath.moviecatalogue.ui.home.HomeActivity
 
 class SplashScreenActivity : AppCompatActivity() {
+
+    companion object {
+        const val TIME = 3000L
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -16,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }, 3000)
+        }, TIME)
     }
 
     override fun onPause() {

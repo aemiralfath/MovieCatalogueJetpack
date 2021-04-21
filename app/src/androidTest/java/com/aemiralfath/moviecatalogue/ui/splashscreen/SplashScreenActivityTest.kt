@@ -124,11 +124,11 @@ class SplashScreenActivityTest {
             }
 
             override fun getDescription(): String {
-                return "wait for " + 3000 + "milliseconds"
+                return "wait for splashscreen"
             }
 
             override fun perform(uiController: UiController, view: View?) {
-                uiController.loopMainThreadForAtLeast(3000)
+                uiController.loopMainThreadForAtLeast(SplashScreenActivity.TIME)
             }
         }
     }
