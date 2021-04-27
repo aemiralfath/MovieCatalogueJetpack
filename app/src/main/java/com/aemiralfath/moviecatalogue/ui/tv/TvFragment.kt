@@ -19,7 +19,7 @@ class TvFragment : Fragment() {
         super.onCreate(savedInstanceState)
         tvViewModel = ViewModelProvider(
             this,
-            ViewModelFactory.getInstance(requireActivity())
+            ViewModelFactory.getInstance()
         ).get(TvViewModel::class.java)
     }
 

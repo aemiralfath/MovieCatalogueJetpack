@@ -1,6 +1,5 @@
 package com.aemiralfath.moviecatalogue.di
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.aemiralfath.moviecatalogue.data.MovieRepository
@@ -17,9 +16,9 @@ class ViewModelFactory private constructor(private val movieRepository: MovieRep
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(context: Context): ViewModelFactory =
+        fun getInstance(): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository(context)).apply {
+                instance ?: ViewModelFactory(Injection.provideRepository()).apply {
                     instance = this
                 }
             }

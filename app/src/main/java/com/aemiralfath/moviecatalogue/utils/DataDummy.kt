@@ -2,6 +2,7 @@ package com.aemiralfath.moviecatalogue.utils
 
 import android.content.Context
 import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -21,22 +22,28 @@ object DataDummy {
         }
     }
 
-    fun loadMovie(): List<MovieEntity> {
+    fun loadMovie(context: Context): List<MovieEntity> {
         val list = ArrayList<MovieEntity>()
         try {
-            val responseObject = JSONObject(parsingFileToString("MovieEntity.json").toString())
-            val listArray = responseObject.getJSONArray("courses")
+            val responseObject = JSONObject(parsingFileToString(context, "MovieDb.json").toString())
+            val listArray = responseObject.getJSONArray("movies")
             for (i in 0 until listArray.length()) {
-                val course = listArray.getJSONObject(i)
+                val movie = listArray.getJSONObject(i)
 
-                val id = course.getString("id")
-                val title = course.getString("title")
-                val description = course.getString("description")
-                val date = course.getString("date")
-                val imagePath = course.getString("imagePath")
-
-                val courseResponse = MovieEntity(id, title, description, date, imagePath)
-                list.add(courseResponse)
+                list.add(
+                    MovieEntity(
+                        movie.getString("overview"),
+                        movie.getString("original_language"),
+                        movie.getString("title"),
+                        movie.getString("poster_path"),
+                        movie.getString("release_date"),
+                        movie.getDouble("popularity"),
+                        movie.getDouble("vote_average"),
+                        movie.getInt("id"),
+                        movie.getBoolean("adult"),
+                        movie.getInt("vote_count"),
+                    )
+                )
             }
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -45,45 +52,34 @@ object DataDummy {
         return list
     }
 
-    fun loadModule(courseId: String): List<ModuleResponse> {
-        val fileName = String.format("Module_%s.json", courseId)
-        val list = ArrayList<ModuleResponse>()
+    fun loadTv(context: Context): List<TvEntity> {
+        val list = ArrayList<TvEntity>()
         try {
-            val result = parsingFileToString(fileName)
-            if (result != null) {
-                val responseObject = JSONObject(result)
-                val listArray = responseObject.getJSONArray("modules")
-                for (i in 0 until listArray.length()) {
-                    val course = listArray.getJSONObject(i)
+            val responseObject = JSONObject(parsingFileToString(context, "TvDb.json").toString())
+            val listArray = responseObject.getJSONArray("tv")
+            for (i in 0 until listArray.length()) {
+                val tv = listArray.getJSONObject(i)
 
-                    val moduleId = course.getString("moduleId")
-                    val title = course.getString("title")
-                    val position = course.getString("position")
-
-                    val courseResponse =
-                        ModuleResponse(moduleId, courseId, title, Integer.parseInt(position))
-                    list.add(courseResponse)
-                }
+                list.add(
+                    TvEntity(
+                        tv.getString("first_air_date"),
+                        tv.getString("overview"),
+                        tv.getString("original_language"),
+                        tv.getString("poster_path"),
+                        tv.getDouble("popularity"),
+                        tv.getDouble("vote_average"),
+                        tv.getString("name"),
+                        tv.getInt("id"),
+                        tv.getInt("vote_count"),
+                    )
+                )
             }
         } catch (e: JSONException) {
             e.printStackTrace()
         }
+
         return list
     }
 
-    fun loadContent(moduleId: String): ContentResponse {
-        val fileName = String.format("Content_%s.json", moduleId)
-        var contentResponse: ContentResponse? = null
-        try {
-            val result = parsingFileToString(fileName)
-            if (result != null) {
-                val responseObject = JSONObject(result)
-                val content = responseObject.getString("content")
-                contentResponse = ContentResponse(moduleId, content)
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return contentResponse as ContentResponse
-    }
+
 }

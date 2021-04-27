@@ -19,7 +19,7 @@ class MovieFragment : Fragment() {
         super.onCreate(savedInstanceState)
         movieViewModel = ViewModelProvider(
             this,
-            ViewModelFactory.getInstance(requireActivity())
+            ViewModelFactory.getInstance()
         ).get(MovieViewModel::class.java)
     }
 
