@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aemiralfath.moviecatalogue.databinding.FragmentMovieBinding
-import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
+import com.aemiralfath.moviecatalogue.di.ViewModelFactory
 
 class MovieFragment : Fragment() {
 
@@ -17,10 +17,10 @@ class MovieFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java).apply {
-            EspressoIdlingResource.increment()
-            setMovie()
-        }
+        movieViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory.getInstance(requireActivity())
+        ).get(MovieViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -28,7 +28,6 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMovieBinding.inflate(layoutInflater, container, false)
-        showLoading(true)
         return binding.root
     }
 
@@ -37,15 +36,19 @@ class MovieFragment : Fragment() {
 
         if (activity != null) {
             with(binding.rvHomeMovie) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
 
+                val movieAdapter = MovieAdapter()
+
+                showLoading(true)
                 movieViewModel.getMovie().observe(viewLifecycleOwner, {
-                    val movieAdapter = MovieAdapter()
                     movieAdapter.setMovie(it)
-                    adapter = movieAdapter
+                    movieAdapter.notifyDataSetChanged()
                     showLoading(false)
                 })
+
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = movieAdapter
             }
         }
     }

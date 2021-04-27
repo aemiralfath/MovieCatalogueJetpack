@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aemiralfath.moviecatalogue.databinding.FragmentTvBinding
-import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
+import com.aemiralfath.moviecatalogue.di.ViewModelFactory
 
 class TvFragment : Fragment() {
 
@@ -17,10 +17,10 @@ class TvFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tvViewModel = ViewModelProvider(this).get(TvViewModel::class.java).apply {
-            EspressoIdlingResource.increment()
-            setTv()
-        }
+        tvViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory.getInstance(requireActivity())
+        ).get(TvViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -28,7 +28,6 @@ class TvFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTvBinding.inflate(layoutInflater, container, false)
-        showLoading(true)
         return binding.root
     }
 
@@ -37,15 +36,19 @@ class TvFragment : Fragment() {
 
         if (activity != null) {
             with(binding.rvHomeTv) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
 
+                val tvAdapter = TvAdapter()
+
+                showLoading(true)
                 tvViewModel.getTv().observe(viewLifecycleOwner, {
-                    val tvAdapter = TvAdapter()
                     tvAdapter.setTv(it)
-                    adapter = tvAdapter
+                    tvAdapter.notifyDataSetChanged()
                     showLoading(false)
                 })
+
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = tvAdapter
             }
         }
     }

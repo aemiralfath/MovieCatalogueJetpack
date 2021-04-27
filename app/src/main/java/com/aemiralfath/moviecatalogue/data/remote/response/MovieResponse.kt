@@ -1,11 +1,8 @@
-package com.aemiralfath.moviecatalogue.data.entity
+package com.aemiralfath.moviecatalogue.data.remote.response
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class TvEntity(
+data class MovieResponse(
 
 	@field:SerializedName("page")
 	val page: Int? = null,
@@ -14,8 +11,8 @@ data class TvEntity(
 	val totalPages: Int? = null,
 
 	@field:SerializedName("results")
-	val results: List<ItemTvEntity?>? = null,
+	val results: List<ItemMovieResponse?>? = null,
 
 	@field:SerializedName("total_results")
 	val totalResults: Int? = null
-) : Parcelable
+)

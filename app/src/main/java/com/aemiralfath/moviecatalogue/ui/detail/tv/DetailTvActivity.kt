@@ -1,12 +1,14 @@
 package com.aemiralfath.moviecatalogue.ui.detail.tv
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
+import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ActivityDetailTvBinding
+import com.aemiralfath.moviecatalogue.di.ViewModelFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -25,42 +27,51 @@ class DetailTvActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProvider(
             this,
-            ViewModelProvider.NewInstanceFactory()
-        ).get(DetailTvViewModel::class.java).apply {
-            intent.getParcelableExtra<ItemTvEntity>(EXTRA_TV)?.let { setTv(it) }
+            ViewModelFactory.getInstance(this)
+        ).get(DetailTvViewModel::class.java)
+
+        val id = intent.getParcelableExtra<TvEntity>(EXTRA_TV)?.id
+
+        if (id != null) {
+            showLoading(true)
+            viewModel.getTv(id).observe(this, { tv ->
+                showLoading(false)
+                val rating = "${tv.voteAverage.toString()}/10"
+
+                supportActionBar?.title = tv.name
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+                with(binding) {
+                    tvTvTitle.text = tv.name
+                    tvTvDate.text = tv.firstAirDate
+                    tvTvRating.text = rating
+                    tvOverview.text = tv.overview
+                    tvTvLanguage.text = tv.originalLanguage
+                    tvTvPopularity.text = tv.popularity.toString()
+                    tvTvVote.text = tv.voteCount.toString()
+
+                    Glide.with(this@DetailTvActivity)
+                        .load("https://image.tmdb.org/t/p/w500${tv.posterPath}")
+                        .apply(
+                            RequestOptions.placeholderOf(R.drawable.ic_loading)
+                                .error(R.drawable.ic_error)
+                        )
+                        .into(imgTvPoster)
+
+                    btnTvShare.setOnClickListener {
+                        ShareCompat.IntentBuilder
+                            .from(this@DetailTvActivity)
+                            .setType("text/plain")
+                            .setChooserTitle(R.string.share_movie)
+                            .setText(resources.getString(R.string.share_text, tv.name))
+                            .startChooser()
+                    }
+                }
+            })
         }
+    }
 
-        val tv = viewModel.getTv()
-        val rating = "${tv.voteAverage.toString()}/10"
-
-        supportActionBar?.title = tv.originalName
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        with(binding) {
-            tvTvTitle.text = tv.originalName
-            tvTvDate.text = tv.firstAirDate
-            tvTvRating.text = rating
-            tvOverview.text = tv.overview
-            tvTvLanguage.text = tv.originalLanguage
-            tvTvPopularity.text = tv.popularity.toString()
-            tvTvVote.text = tv.voteCount.toString()
-
-            Glide.with(this@DetailTvActivity)
-                .load("https://image.tmdb.org/t/p/w500${tv.posterPath}")
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .into(imgTvPoster)
-
-            btnTvShare.setOnClickListener {
-                ShareCompat.IntentBuilder
-                    .from(this@DetailTvActivity)
-                    .setType("text/plain")
-                    .setChooserTitle(R.string.share_movie)
-                    .setText(resources.getString(R.string.share_text, tv.name))
-                    .startChooser()
-            }
-        }
+    private fun showLoading(state: Boolean) {
+        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
     }
 }

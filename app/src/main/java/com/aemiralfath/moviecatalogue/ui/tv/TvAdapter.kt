@@ -5,21 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
-import com.aemiralfath.moviecatalogue.data.entity.TvEntity
+import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvActivity
-import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
-    private var listTv = TvEntity()
+    private var listTv = ArrayList<TvEntity>()
 
-    fun setTv(tv: TvEntity) {
-        if (tv.results?.isEmpty() == true) return
-        this.listTv = tv
-        EspressoIdlingResource.decrement()
+    fun setTv(tv: List<TvEntity>) {
+        if (tv.isEmpty()) return
+        this.listTv = tv as ArrayList<TvEntity>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
@@ -33,21 +30,21 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TvViewHolder, position: Int) {
-        holder.bind(listTv.results?.get(position))
+        holder.bind(listTv[position])
     }
 
-    override fun getItemCount(): Int = listTv.results?.size ?: 0
+    override fun getItemCount(): Int = listTv.size
 
     class TvViewHolder(private val binding: ItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tv: ItemTvEntity?) {
+        fun bind(tv: TvEntity) {
             with(binding) {
-                tvItemTitle.text = tv?.originalName
-                tvItemDate.text = tv?.firstAirDate
-                tvItemDescription.text = tv?.overview
+                tvItemTitle.text = tv.name
+                tvItemDate.text = tv.firstAirDate
+                tvItemDescription.text = tv.overview
 
                 Glide.with(itemView.context)
-                    .load("https://image.tmdb.org/t/p/w500${tv?.posterPath}")
+                    .load("https://image.tmdb.org/t/p/w500${tv.posterPath}")
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error)

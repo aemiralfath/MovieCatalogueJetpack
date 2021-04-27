@@ -1,16 +1,12 @@
 package com.aemiralfath.moviecatalogue.ui.detail.tv
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.aemiralfath.moviecatalogue.data.entity.ItemTvEntity
+import com.aemiralfath.moviecatalogue.data.MovieRepository
+import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 
-class DetailTvViewModel : ViewModel() {
-    private lateinit var tv: ItemTvEntity
+class DetailTvViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
-    fun setTv(tv: ItemTvEntity) {
-        this.tv = tv
-    }
+    fun getTv(id: Int): LiveData<TvEntity> = movieRepository.getTv(id)
 
-    fun getTv(): ItemTvEntity {
-        return tv
-    }
 }

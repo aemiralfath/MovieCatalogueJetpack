@@ -1,7 +1,7 @@
 package com.aemiralfath.moviecatalogue.ui.detail.movie
 
 import android.os.Build
-import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
+import com.aemiralfath.moviecatalogue.data.remote.response.ItemMovieResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -16,13 +16,13 @@ import org.robolectric.annotation.LooperMode
 @LooperMode(LooperMode.Mode.PAUSED)
 class DetailMovieViewModelTest {
 
-    private lateinit var dummyMovie: ItemMovieEntity
+    private lateinit var dummyMovie: ItemMovieResponse
     private lateinit var viewModel: DetailMovieViewModel
 
     @Before
     fun setUp() {
         viewModel = DetailMovieViewModel()
-        dummyMovie = ItemMovieEntity(
+        dummyMovie = ItemMovieResponse(
             id = 1,
             title = "twist",
             releaseDate = "2021-01-22",

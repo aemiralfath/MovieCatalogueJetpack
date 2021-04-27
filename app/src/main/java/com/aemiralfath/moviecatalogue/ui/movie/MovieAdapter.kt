@@ -5,22 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.entity.ItemMovieEntity
-import com.aemiralfath.moviecatalogue.data.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.detail.movie.DetailMovieActivity
-import com.aemiralfath.moviecatalogue.utils.EspressoIdlingResource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    private var listMovie = MovieEntity()
+    private var listMovie = ArrayList<MovieEntity>()
 
-    fun setMovie(movie: MovieEntity) {
-        if (movie.results?.isEmpty() == true) return
-        this.listMovie = movie
-        EspressoIdlingResource.decrement()
+    fun setMovie(movie: List<MovieEntity>) {
+        if (movie.isEmpty()) return
+        this.listMovie = movie as ArrayList<MovieEntity>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -34,21 +31,21 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(listMovie.results?.get(position))
+        holder.bind(listMovie[position])
     }
 
-    override fun getItemCount(): Int = listMovie.results?.size ?: 0
+    override fun getItemCount(): Int = listMovie.size
 
     class MovieViewHolder(private val binding: ItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: ItemMovieEntity?) {
+        fun bind(movie: MovieEntity) {
             with(binding) {
-                tvItemTitle.text = movie?.originalTitle
-                tvItemDate.text = movie?.releaseDate
-                tvItemDescription.text = movie?.overview
+                tvItemTitle.text = movie.title
+                tvItemDate.text = movie.releaseDate
+                tvItemDescription.text = movie.overview
 
                 Glide.with(itemView.context)
-                    .load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+                    .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error)
