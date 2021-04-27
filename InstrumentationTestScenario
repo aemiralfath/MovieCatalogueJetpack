@@ -1,19 +1,13 @@
 1. Menampilkan data movie
-    - Memastikan image splashscreen dalam keadaan tampil
-    - Menunggu splashscreen selesai
     - Memastikan rv_home_movie dalam keadaan tampil
     - Gulir rv_home_movie ke posisi data ke 10
 
 2. Menampilkan data Tv Show
-    - Memastikan image splashscreen dalam keadaan tampil
-    - Menunggu splashscreen selesai
     - Klik TabLayout dengan teks Tv Show
     - Memastikan rv_home_tv dalam keadaan tampil
     - Gulir rv_home_tv ke posisi data ke 10
 
 3. Menampilkan data detail movie
-    - Memastikan image splashscreen dalam keadaan tampil
-    - Menunggu splashscreen selesai
     - Memastikan rv_home_movie dalam keadaan tampil
     - Gulir rv_home_movie ke posisi data ke 10
     - Memberi tindakan klik pada data ke 10 di rv_home_movie
@@ -24,8 +18,6 @@
     - Memberi tindakan klik kembali
 
 4. Menampilkan data detail tv
-    - Memastikan image splashscreen dalam keadaan tampil
-    - Menunggu splashscreen selesai
     - Klik TabLayout dengan teks Tv Show
     - Memastikan rv_home_tv dalam keadaan tampil
     - Gulir rv_home_tv ke posisi data ke 10

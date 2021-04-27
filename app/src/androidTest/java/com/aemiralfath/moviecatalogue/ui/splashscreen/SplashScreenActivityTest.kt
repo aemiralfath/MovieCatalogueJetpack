@@ -1,13 +1,10 @@
 package com.aemiralfath.moviecatalogue.ui.splashscreen
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -41,39 +38,22 @@ class SplashScreenActivityTest {
     }
 
     @Test
-    fun loadMovie() {
-        //splash screen
-        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
-        onView(isRoot()).perform(waitForSplashscreen())
-
-        //movie
+    fun loadHome() {
         onView(withId(R.id.rv_home_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_home_movie)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
         )
-    }
 
-    @Test
-    fun loadTv() {
-        //splash screen
-        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
-        onView(isRoot()).perform(waitForSplashscreen())
-
-        //tv show
         onView(withText(R.string.tab_text_2)).perform(click())
         onView(withId(R.id.rv_home_tv)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_home_tv)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
         )
+        onView(withText(R.string.tab_text_1)).perform(click())
     }
 
     @Test
     fun loadDetailMovie() {
-        //splash screen
-        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
-        onView(isRoot()).perform(waitForSplashscreen())
-
-        //movie
         onView(withId(R.id.rv_home_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_home_movie)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
@@ -93,11 +73,6 @@ class SplashScreenActivityTest {
 
     @Test
     fun loadDetailTv() {
-        //splash screen
-        onView(withId(R.id.img_splashscreen)).check(matches(isDisplayed()))
-        onView(isRoot()).perform(waitForSplashscreen())
-
-        //tv show
         onView(withText(R.string.tab_text_2)).perform(click())
         onView(withId(R.id.rv_home_tv))
             .check(matches(isDisplayed()))
@@ -117,19 +92,4 @@ class SplashScreenActivityTest {
         pressBack()
     }
 
-    private fun waitForSplashscreen(): ViewAction {
-        return object : ViewAction {
-            override fun getConstraints(): org.hamcrest.Matcher<View> {
-                return isRoot()
-            }
-
-            override fun getDescription(): String {
-                return "wait for splashscreen"
-            }
-
-            override fun perform(uiController: UiController, view: View?) {
-                uiController.loopMainThreadForAtLeast(SplashScreenActivity.TIME)
-            }
-        }
-    }
 }
