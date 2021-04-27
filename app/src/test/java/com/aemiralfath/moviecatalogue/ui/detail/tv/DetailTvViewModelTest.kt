@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MovieRepository
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
+import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -46,16 +47,7 @@ class DetailTvViewModelTest {
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         viewModel = DetailTvViewModel(movieRepository)
-        dummyTv = TvEntity(
-            id = 88396,
-            name = "The Falcon and the Winter Soldier",
-            firstAirDate = "2021-03-19",
-            voteAverage = 7.9,
-            overview = "Overview",
-            originalLanguage = "en",
-            popularity = 3696.277,
-            voteCount = 4883
-        )
+        dummyTv = DataDummy.loadTv(context)[0]
     }
 
     @Test

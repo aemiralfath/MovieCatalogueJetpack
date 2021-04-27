@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MovieRepository
 import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -46,17 +47,7 @@ class DetailMovieViewModelTest {
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         viewModel = DetailMovieViewModel(movieRepository)
-        dummyMovie = MovieEntity(
-            id = 460465,
-            title = "Mortal Kombat",
-            releaseDate = "2021-04-07",
-            voteAverage = 8.0,
-            overview = "Overview",
-            adult = false,
-            originalLanguage = "en",
-            popularity = 9606.216,
-            voteCount = 1444
-        )
+        dummyMovie = DataDummy.loadMovie(context)[0]
     }
 
     @Test
