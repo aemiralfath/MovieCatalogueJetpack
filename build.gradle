@@ -18,6 +18,7 @@ buildscript {
         navigationVersion = '2.3.5'
         legacyVersion = '1.0.0'
 
+        koinVersion = '2.0.1'
         retrofitVersion = '2.9.0'
         loggingVersion = '4.9.0'
         annotationVersion = '10.0-b28'

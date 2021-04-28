@@ -65,6 +65,11 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$loggingVersion"
     implementation "org.glassfish:javax.annotation:$annotationVersion"
 
+    //koin
+    implementation "org.koin:koin-android:$koinVersion"
+    implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
+    implementation "org.koin:koin-androidx-scope:$koinVersion"
+
     //testing
     testImplementation "junit:junit:$junitVersion"
     testImplementation "androidx.test:core-ktx:$androidTestVersion"
