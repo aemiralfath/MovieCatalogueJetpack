@@ -1,6 +1,8 @@
-package com.aemiralfath.moviecatalogue.di
+package com.aemiralfath.moviecatalogue
 
 import android.app.Application
+import com.aemiralfath.moviecatalogue.di.appModule
+import com.aemiralfath.moviecatalogue.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

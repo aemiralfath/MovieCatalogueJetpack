@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aemiralfath.moviecatalogue.databinding.FragmentMovieBinding
+import com.aemiralfath.moviecatalogue.utils.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
 
-    private val movieViewModel:MovieViewModel by viewModel()
+    private val movieViewModel: MovieViewModel by viewModel()
     private lateinit var binding: FragmentMovieBinding
 
     override fun onCreateView(
@@ -30,11 +32,21 @@ class MovieFragment : Fragment() {
 
                 val movieAdapter = MovieAdapter()
 
-                showLoading(true)
                 movieViewModel.getMovie().observe(viewLifecycleOwner, {
-                    movieAdapter.setMovie(it)
-                    movieAdapter.notifyDataSetChanged()
-                    showLoading(false)
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            showLoading(false)
+                            it.data?.let { data -> movieAdapter.setMovie(data) }
+                            movieAdapter.notifyDataSetChanged()
+                        }
+                        Status.LOADING -> {
+                            showLoading(true)
+                        }
+                        Status.ERROR -> {
+                            showLoading(false)
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
                 })
 
                 layoutManager = LinearLayoutManager(context)

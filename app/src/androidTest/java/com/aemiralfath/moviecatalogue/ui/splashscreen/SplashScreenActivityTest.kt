@@ -5,7 +5,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -38,18 +38,23 @@ class SplashScreenActivityTest {
     }
 
     @Test
-    fun loadHome() {
+    fun loadAndScrollMovies() {
         onView(withId(R.id.rv_home_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_home_movie)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
         )
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withText(R.string.tab_text_1)).perform(click())
+    }
 
+    @Test
+    fun loadAndScrollTvShow() {
         onView(withText(R.string.tab_text_2)).perform(click())
         onView(withId(R.id.rv_home_tv)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_home_tv)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10)
         )
-        onView(withText(R.string.tab_text_1)).perform(click())
+        onView(withId(R.id.view_pager)).perform(swipeRight())
     }
 
     @Test

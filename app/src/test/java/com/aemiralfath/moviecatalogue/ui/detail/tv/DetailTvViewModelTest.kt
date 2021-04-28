@@ -9,6 +9,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
+import com.aemiralfath.moviecatalogue.utils.Resource
+import com.aemiralfath.moviecatalogue.utils.Status
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -41,7 +43,7 @@ class DetailTvViewModelTest {
     private lateinit var movieRepository: MainRepository
 
     @Mock
-    private lateinit var observer: Observer<TvEntity>
+    private lateinit var observer: Observer<Resource<TvEntity>>
 
     @Before
     fun setUp() {
@@ -52,23 +54,25 @@ class DetailTvViewModelTest {
 
     @Test
     fun getTv() {
-        val tv = MutableLiveData<TvEntity>()
-        tv.postValue(dummyTv)
+        val response = Resource(Status.SUCCESS, dummyTv, "success")
+
+        val tv = MutableLiveData<Resource<TvEntity>>()
+        tv.postValue(response)
 
         `when`(dummyTv.id?.let { movieRepository.getTv(it) }).thenReturn(tv)
         val tvEntity = dummyTv.id?.let { viewModel.getTv(it).value }
         dummyTv.id?.let { verify(movieRepository).getTv(it) }
 
         assertNotNull(tvEntity)
-        assertEquals(dummyTv.id, tvEntity?.id)
-        assertEquals(dummyTv.name, tvEntity?.name)
-        assertEquals(dummyTv.firstAirDate, tvEntity?.firstAirDate)
-        assertEquals(dummyTv.voteAverage, tvEntity?.voteAverage)
-        assertEquals(dummyTv.originalLanguage, tvEntity?.originalLanguage)
-        assertEquals(dummyTv.popularity, tvEntity?.popularity)
-        assertEquals(dummyTv.voteCount, tvEntity?.voteCount)
+        assertEquals(dummyTv.id, tvEntity?.data?.id)
+        assertEquals(dummyTv.name, tvEntity?.data?.name)
+        assertEquals(dummyTv.firstAirDate, tvEntity?.data?.firstAirDate)
+        assertEquals(dummyTv.voteAverage, tvEntity?.data?.voteAverage)
+        assertEquals(dummyTv.originalLanguage, tvEntity?.data?.originalLanguage)
+        assertEquals(dummyTv.popularity, tvEntity?.data?.popularity)
+        assertEquals(dummyTv.voteCount, tvEntity?.data?.voteCount)
 
         dummyTv.id?.let { viewModel.getTv(it).observeForever(observer) }
-        verify(observer).onChanged(dummyTv)
+        verify(observer).onChanged(response)
     }
 }

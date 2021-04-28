@@ -9,6 +9,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
+import com.aemiralfath.moviecatalogue.utils.Resource
+import com.aemiralfath.moviecatalogue.utils.Status
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -41,7 +43,7 @@ class DetailMovieViewModelTest {
     private lateinit var movieRepository: MainRepository
 
     @Mock
-    private lateinit var observer: Observer<MovieEntity>
+    private lateinit var observer: Observer<Resource<MovieEntity>>
 
     @Before
     fun setUp() {
@@ -52,23 +54,25 @@ class DetailMovieViewModelTest {
 
     @Test
     fun getMovie() {
-        val movie = MutableLiveData<MovieEntity>()
-        movie.postValue(dummyMovie)
+        val response = Resource(Status.SUCCESS, dummyMovie, "success")
+
+        val movie = MutableLiveData<Resource<MovieEntity>>()
+        movie.postValue(response)
 
         `when`(dummyMovie.id?.let { movieRepository.getMovie(it) }).thenReturn(movie)
         val movieEntity = dummyMovie.id?.let { viewModel.getMovie(it).value }
         dummyMovie.id?.let { verify(movieRepository).getMovie(it) }
 
         assertNotNull(movieEntity)
-        assertEquals(dummyMovie.id, movieEntity?.id)
-        assertEquals(dummyMovie.title, movieEntity?.title)
-        assertEquals(dummyMovie.releaseDate, movieEntity?.releaseDate)
-        assertEquals(dummyMovie.voteAverage, movieEntity?.voteAverage)
-        assertEquals(dummyMovie.originalLanguage, movieEntity?.originalLanguage)
-        assertEquals(dummyMovie.popularity, movieEntity?.popularity)
-        assertEquals(dummyMovie.voteCount, movieEntity?.voteCount)
+        assertEquals(dummyMovie.id, movieEntity?.data?.id)
+        assertEquals(dummyMovie.title, movieEntity?.data?.title)
+        assertEquals(dummyMovie.releaseDate, movieEntity?.data?.releaseDate)
+        assertEquals(dummyMovie.voteAverage, movieEntity?.data?.voteAverage)
+        assertEquals(dummyMovie.originalLanguage, movieEntity?.data?.originalLanguage)
+        assertEquals(dummyMovie.popularity, movieEntity?.data?.popularity)
+        assertEquals(dummyMovie.voteCount, movieEntity?.data?.voteCount)
 
         dummyMovie.id?.let { viewModel.getMovie(it).observeForever(observer) }
-        verify(observer).onChanged(dummyMovie)
+        verify(observer).onChanged(response)
     }
 }

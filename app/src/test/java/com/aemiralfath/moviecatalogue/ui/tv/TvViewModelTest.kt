@@ -9,6 +9,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
+import com.aemiralfath.moviecatalogue.utils.Resource
+import com.aemiralfath.moviecatalogue.utils.Status
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -40,7 +42,7 @@ class TvViewModelTest {
     private lateinit var movieRepository: MainRepository
 
     @Mock
-    private lateinit var observer: Observer<List<TvEntity>>
+    private lateinit var observer: Observer<Resource<List<TvEntity>>>
 
     @Before
     fun setUp() {
@@ -50,8 +52,8 @@ class TvViewModelTest {
 
     @Test
     fun getTv() {
-        val dummyTv = DataDummy.loadTv(context)
-        val tv = MutableLiveData<List<TvEntity>>()
+        val dummyTv = Resource(Status.SUCCESS, DataDummy.loadTv(context), "success")
+        val tv = MutableLiveData<Resource<List<TvEntity>>>()
         tv.value = dummyTv
 
         `when`(movieRepository.getAllTv()).thenReturn(tv)
@@ -59,7 +61,41 @@ class TvViewModelTest {
         verify(movieRepository).getAllTv()
 
         assertNotNull(tvEntities)
-        assertEquals(20, tvEntities?.size)
+        assertEquals(20, tvEntities?.data?.size)
+
+        viewModel.getTv().observeForever(observer)
+        verify(observer).onChanged(dummyTv)
+    }
+
+    @Test
+    fun getTvEmpty() {
+        val dummyTv = Resource(Status.SUCCESS, listOf<TvEntity>(), "success")
+        val tv = MutableLiveData<Resource<List<TvEntity>>>()
+        tv.value = dummyTv
+
+        `when`(movieRepository.getAllTv()).thenReturn(tv)
+        val tvEntities = viewModel.getTv().value
+        verify(movieRepository).getAllTv()
+
+        assertNotNull(tvEntities)
+        assertEquals(0, tvEntities?.data?.size)
+
+        viewModel.getTv().observeForever(observer)
+        verify(observer).onChanged(dummyTv)
+    }
+
+    @Test
+    fun getTvFailed() {
+        val dummyTv = Resource(Status.ERROR, null, "error")
+        val tv = MutableLiveData<Resource<List<TvEntity>>>()
+        tv.value = dummyTv
+
+        `when`(movieRepository.getAllTv()).thenReturn(tv)
+        val tvEntities = viewModel.getTv().value
+        verify(movieRepository).getAllTv()
+
+        assertNotNull(tvEntities)
+        assertEquals("error", tvEntities?.message)
 
         viewModel.getTv().observeForever(observer)
         verify(observer).onChanged(dummyTv)
