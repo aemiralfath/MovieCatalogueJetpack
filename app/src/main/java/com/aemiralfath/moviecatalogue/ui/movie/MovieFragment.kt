@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
 
-    private val movieViewModel by viewModel<MovieViewModel>()
+    private val movieViewModel:MovieViewModel by viewModel()
     private lateinit var binding: FragmentMovieBinding
 
     override fun onCreateView(

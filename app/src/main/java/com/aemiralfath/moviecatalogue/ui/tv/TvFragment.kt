@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TvFragment : Fragment() {
 
-    private val tvViewModel by viewModel<TvViewModel>()
+    private val tvViewModel: TvViewModel by viewModel()
     private lateinit var binding: FragmentTvBinding
 
     override fun onCreateView(

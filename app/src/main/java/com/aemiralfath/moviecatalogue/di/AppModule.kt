@@ -12,27 +12,12 @@ import org.koin.dsl.module
 
 val appModule = module {
     single { RemoteDataSource(ServiceClient()) }
-    single {
-        val remoteDataSource: RemoteDataSource = get()
-        MainRepository(remoteDataSource)
-    }
+    single { MainRepository(get()) }
 }
 
 val viewModelModule = module {
-    viewModel {
-        val repository: MainRepository = get()
-        MovieViewModel(repository)
-    }
-    viewModel {
-        val repository: MainRepository = get()
-        TvViewModel(repository)
-    }
-    viewModel {
-        val repository: MainRepository = get()
-        DetailTvViewModel(repository)
-    }
-    viewModel {
-        val repository: MainRepository = get()
-        DetailMovieViewModel(repository)
-    }
+    viewModel { MovieViewModel(get()) }
+    viewModel { TvViewModel(get()) }
+    viewModel { DetailTvViewModel(get()) }
+    viewModel { DetailMovieViewModel(get()) }
 }
