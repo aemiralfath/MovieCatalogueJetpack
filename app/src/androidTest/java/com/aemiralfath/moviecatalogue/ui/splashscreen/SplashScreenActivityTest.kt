@@ -74,6 +74,8 @@ class SplashScreenActivityTest {
         onView(withId(R.id.tv_movie_rating)).check(matches(isDisplayed()))
 
         pressBack()
+        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withText(R.string.tab_text_1)).perform(click())
     }
 
     @Test
@@ -95,6 +97,7 @@ class SplashScreenActivityTest {
         onView(withId(R.id.tv_tv_rating)).check(matches(isDisplayed()))
 
         pressBack()
+        onView(withId(R.id.view_pager)).perform(swipeRight())
     }
 
 }

@@ -1,11 +1,14 @@
-1. Menampilkan data movie
+1. Menampilkan dan scroll data movie
     - Memastikan rv_home_movie dalam keadaan tampil
     - Gulir rv_home_movie ke posisi data ke 10
+    - Melakukan swipe ke kiri pada view pager
+    - Klik Tablayout dengan teks Movies
 
 2. Menampilkan data Tv Show
     - Klik TabLayout dengan teks Tv Show
     - Memastikan rv_home_tv dalam keadaan tampil
     - Gulir rv_home_tv ke posisi data ke 10
+    - Melakukan swipe ke kanan pada view pager
 
 3. Menampilkan data detail movie
     - Memastikan rv_home_movie dalam keadaan tampil
@@ -16,6 +19,8 @@
     - Memastikan TextView untuk date tampil sesuai yang diharapkan
     - Memastikan TextView untuk rating tampil sesuai yang diharapkan
     - Memberi tindakan klik kembali
+    - Melakukan swipe ke kiri pada view pager
+    - Klik Tablayout dengan teks Movies
 
 4. Menampilkan data detail tv
     - Klik TabLayout dengan teks Tv Show
@@ -27,3 +32,4 @@
     - Memastikan TextView untuk date tampil sesuai yang diharapkan
     - Memastikan TextView untuk rating tampil sesuai yang diharapkan
     - Memberi tindakan klik kembali
+    - Melakukan swipe ke kanan pada view pager
