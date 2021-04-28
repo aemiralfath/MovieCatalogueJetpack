@@ -66,9 +66,9 @@ dependencies {
     implementation "org.glassfish:javax.annotation:$annotationVersion"
 
     //koin
+    implementation "org.koin:koin-core:$koinVersion"
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
-    implementation "org.koin:koin-androidx-scope:$koinVersion"
 
     //testing
     testImplementation "junit:junit:$junitVersion"

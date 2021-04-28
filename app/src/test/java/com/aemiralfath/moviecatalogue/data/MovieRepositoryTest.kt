@@ -31,7 +31,7 @@ class MovieRepositoryTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val remote = Mockito.mock(RemoteDataSource::class.java)
-    private val movieRepository = FakeMovieRepository(remote)
+    private val movieRepository = FakeMainRepository(remote)
 
     private val dummyMovies = DataDummy.loadMovieRemote(context)
     private val movie = DetailMovieResponse(

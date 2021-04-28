@@ -2,27 +2,15 @@ package com.aemiralfath.moviecatalogue.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.aemiralfath.moviecatalogue.data.MovieRepository
+import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.ui.detail.movie.DetailMovieViewModel
 import com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvViewModel
 import com.aemiralfath.moviecatalogue.ui.movie.MovieViewModel
 import com.aemiralfath.moviecatalogue.ui.tv.TvViewModel
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory private constructor(private val movieRepository: MovieRepository) :
+class ViewModelFactory(private val movieRepository: MainRepository) :
     ViewModelProvider.NewInstanceFactory() {
-
-    companion object {
-        @Volatile
-        private var instance: ViewModelFactory? = null
-
-        fun getInstance(): ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository()).apply {
-                    instance = this
-                }
-            }
-    }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {

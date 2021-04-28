@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
-import androidx.lifecycle.ViewModelProvider
 import com.aemiralfath.moviecatalogue.R
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ActivityDetailTvBinding
-import com.aemiralfath.moviecatalogue.di.ViewModelFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailTvActivity : AppCompatActivity() {
 
@@ -25,10 +24,7 @@ class DetailTvActivity : AppCompatActivity() {
         binding = ActivityDetailTvBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory.getInstance()
-        ).get(DetailTvViewModel::class.java)
+        val viewModel: DetailTvViewModel by viewModel()
 
         val id = intent.getParcelableExtra<TvEntity>(EXTRA_TV)?.id
 

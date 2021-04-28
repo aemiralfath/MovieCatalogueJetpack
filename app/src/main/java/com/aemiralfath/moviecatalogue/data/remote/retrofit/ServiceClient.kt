@@ -1,5 +1,6 @@
 package com.aemiralfath.moviecatalogue.data.remote.retrofit
 
+import com.aemiralfath.moviecatalogue.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,10 +11,13 @@ class ServiceClient {
     private var builder = Retrofit.Builder()
 
     private fun getInterceptor(): OkHttpClient {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-
-        return OkHttpClient.Builder().addInterceptor(logging).build()
+        return if (BuildConfig.DEBUG) {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+            OkHttpClient.Builder().addInterceptor(logging).build()
+        } else {
+            OkHttpClient.Builder().build()
+        }
     }
 
     fun buildServiceClient(): ServiceRepository {

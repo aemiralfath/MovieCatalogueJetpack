@@ -5,23 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aemiralfath.moviecatalogue.databinding.FragmentTvBinding
-import com.aemiralfath.moviecatalogue.di.ViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TvFragment : Fragment() {
 
-    private lateinit var tvViewModel: TvViewModel
+    private val tvViewModel by viewModel<TvViewModel>()
     private lateinit var binding: FragmentTvBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tvViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory.getInstance()
-        ).get(TvViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -5,18 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.data.remote.RemoteDataSource
+import com.aemiralfath.moviecatalogue.data.remote.RemoteDataSource.*
 import com.aemiralfath.moviecatalogue.data.remote.response.DetailMovieResponse
 import com.aemiralfath.moviecatalogue.data.remote.response.DetailTvResponse
 import com.aemiralfath.moviecatalogue.data.remote.response.ItemMovieResponse
 import com.aemiralfath.moviecatalogue.data.remote.response.ItemTvResponse
 
-class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
-    MovieDataSource {
+class MainRepository(private val remoteDataSource: RemoteDataSource) :
+    MainDataSource {
 
     override fun getAllMovies(): LiveData<List<MovieEntity>> {
         val movieResult = MutableLiveData<List<MovieEntity>>()
 
-        remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
+        remoteDataSource.getAllMovies(object : LoadMoviesCallback {
             override fun onAllMoviesReceived(movieResponse: List<ItemMovieResponse?>?) {
                 val movieList = ArrayList<MovieEntity>()
                 if (movieResponse != null) {
@@ -46,7 +47,7 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
     override fun getAllTv(): LiveData<List<TvEntity>> {
         val tvResult = MutableLiveData<List<TvEntity>>()
 
-        remoteDataSource.getAllTv(object : RemoteDataSource.LoadTvCallback {
+        remoteDataSource.getAllTv(object : LoadTvCallback {
             override fun onAllTvCallback(tvResponse: List<ItemTvResponse?>?) {
                 val tvList = ArrayList<TvEntity>()
                 if (tvResponse != null) {
@@ -75,7 +76,7 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
     override fun getMovie(id: Int): LiveData<MovieEntity> {
         val movieResult = MutableLiveData<MovieEntity>()
 
-        remoteDataSource.getMovie(id, object : RemoteDataSource.LoadDetailMovieCallback {
+        remoteDataSource.getMovie(id, object : LoadDetailMovieCallback {
             override fun onDetailMovieReceived(detailMovieResponse: DetailMovieResponse) {
                 movieResult.postValue(
                     MovieEntity(
@@ -100,7 +101,7 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
     override fun getTv(id: Int): LiveData<TvEntity> {
         val tvResult = MutableLiveData<TvEntity>()
 
-        remoteDataSource.getTv(id, object : RemoteDataSource.LoadDetailTvCallback {
+        remoteDataSource.getTv(id, object : LoadDetailTvCallback {
             override fun onDetailTvReceived(detailTvResponse: DetailTvResponse) {
                 tvResult.postValue(
                     TvEntity(

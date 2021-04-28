@@ -6,7 +6,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
-import com.aemiralfath.moviecatalogue.data.MovieRepository
+import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.nhaarman.mockitokotlin2.verify
@@ -38,7 +38,7 @@ class DetailTvViewModelTest {
     var rule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
-    private lateinit var movieRepository: MovieRepository
+    private lateinit var movieRepository: MainRepository
 
     @Mock
     private lateinit var observer: Observer<TvEntity>

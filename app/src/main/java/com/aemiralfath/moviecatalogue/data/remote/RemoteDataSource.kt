@@ -9,19 +9,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RemoteDataSource private constructor(private val client: ServiceClient) {
+class RemoteDataSource(private val client: ServiceClient) {
 
     private val token = BuildConfig.TMDB_API_KEY
-
-    companion object {
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(client: ServiceClient): RemoteDataSource =
-            instance ?: synchronized(this) {
-                instance ?: RemoteDataSource(client).apply { instance = this }
-            }
-    }
 
     fun getAllMovies(callback: LoadMoviesCallback) {
         EspressoIdlingResource.increment()

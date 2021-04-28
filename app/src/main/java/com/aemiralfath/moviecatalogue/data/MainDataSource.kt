@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
 
-interface MovieDataSource {
+interface MainDataSource {
     fun getAllMovies(): LiveData<List<MovieEntity>>
 
     fun getAllTv(): LiveData<List<TvEntity>>
