@@ -3,20 +3,27 @@ package com.aemiralfath.moviecatalogue.ui.tv
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
+import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ItemRowBinding
 import com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
-    private var listTv = ArrayList<TvEntity>()
+class TvAdapter : PagedListAdapter<TvEntity, TvAdapter.TvViewHolder>(DIFF_CALLBACK) {
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvEntity>() {
+            override fun areItemsTheSame(oldItem: TvEntity, newItem: TvEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    fun setTv(tv: List<TvEntity>) {
-        if (tv.isEmpty()) return
-        this.listTv = tv as ArrayList<TvEntity>
+            override fun areContentsTheSame(oldItem: TvEntity, newItem: TvEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
@@ -30,10 +37,11 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TvViewHolder, position: Int) {
-        holder.bind(listTv[position])
+        val tv = getItem(position)
+        if (tv != null) {
+            holder.bind(tv)
+        }
     }
-
-    override fun getItemCount(): Int = listTv.size
 
     class TvViewHolder(private val binding: ItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -7,10 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
-import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
-import com.aemiralfath.moviecatalogue.utils.Resource
-import com.aemiralfath.moviecatalogue.utils.Status
+import com.aemiralfath.moviecatalogue.vo.Resource
+import com.aemiralfath.moviecatalogue.vo.Status
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

@@ -1,7 +1,9 @@
 package com.aemiralfath.moviecatalogue
 
 import android.app.Application
+import com.aemiralfath.moviecatalogue.di.apiModule
 import com.aemiralfath.moviecatalogue.di.appModule
+import com.aemiralfath.moviecatalogue.di.databaseModule
 import com.aemiralfath.moviecatalogue.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -14,7 +16,7 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(listOf(appModule, viewModelModule))
+            modules(listOf(appModule, databaseModule, apiModule, viewModelModule))
         }
     }
 

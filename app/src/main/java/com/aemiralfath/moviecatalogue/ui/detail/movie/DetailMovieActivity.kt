@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import com.aemiralfath.moviecatalogue.R
-import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.databinding.ActivityDetailMovieBinding
-import com.aemiralfath.moviecatalogue.utils.Status
+import com.aemiralfath.moviecatalogue.vo.Status
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel

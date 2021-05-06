@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.data.remote.retrofit
+package com.aemiralfath.moviecatalogue.data.source.remote.retrofit
 
 import com.aemiralfath.moviecatalogue.BuildConfig
 import okhttp3.OkHttpClient

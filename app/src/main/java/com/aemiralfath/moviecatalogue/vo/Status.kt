@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.utils
+package com.aemiralfath.moviecatalogue.vo
 
 enum class Status {
     SUCCESS,

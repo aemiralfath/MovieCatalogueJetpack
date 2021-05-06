@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aemiralfath.moviecatalogue.databinding.FragmentMovieBinding
-import com.aemiralfath.moviecatalogue.utils.Status
+import com.aemiralfath.moviecatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
@@ -36,8 +36,7 @@ class MovieFragment : Fragment() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             showLoading(false)
-                            it.data?.let { data -> movieAdapter.setMovie(data) }
-                            movieAdapter.notifyDataSetChanged()
+                            it.data?.let { data -> movieAdapter.submitList(data) }
                         }
                         Status.LOADING -> {
                             showLoading(true)

@@ -1,10 +1,10 @@
 package com.aemiralfath.moviecatalogue.utils
 
 import android.content.Context
-import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
-import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
-import com.aemiralfath.moviecatalogue.data.remote.response.ItemMovieResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.ItemTvResponse
+import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
+import com.aemiralfath.moviecatalogue.data.source.remote.response.ItemMovieResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.ItemTvResponse
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException

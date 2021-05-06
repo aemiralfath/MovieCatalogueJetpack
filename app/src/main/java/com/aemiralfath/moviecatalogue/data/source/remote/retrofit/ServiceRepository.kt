@@ -1,9 +1,9 @@
-package com.aemiralfath.moviecatalogue.data.remote.retrofit
+package com.aemiralfath.moviecatalogue.data.source.remote.retrofit
 
-import com.aemiralfath.moviecatalogue.data.remote.response.DetailMovieResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.DetailTvResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.MovieResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.TvResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.DetailMovieResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.DetailTvResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.MovieResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.TvResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

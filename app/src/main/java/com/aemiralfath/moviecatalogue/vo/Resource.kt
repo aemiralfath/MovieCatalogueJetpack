@@ -1,4 +1,4 @@
-package com.aemiralfath.moviecatalogue.utils
+package com.aemiralfath.moviecatalogue.vo
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {

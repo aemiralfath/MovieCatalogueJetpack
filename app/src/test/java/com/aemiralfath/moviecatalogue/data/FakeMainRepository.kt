@@ -2,14 +2,14 @@ package com.aemiralfath.moviecatalogue.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.aemiralfath.moviecatalogue.data.local.entity.MovieEntity
-import com.aemiralfath.moviecatalogue.data.local.entity.TvEntity
-import com.aemiralfath.moviecatalogue.data.remote.RemoteDataSource
-import com.aemiralfath.moviecatalogue.data.remote.response.DetailMovieResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.DetailTvResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.ItemMovieResponse
-import com.aemiralfath.moviecatalogue.data.remote.response.ItemTvResponse
-import com.aemiralfath.moviecatalogue.utils.Resource
+import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
+import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
+import com.aemiralfath.moviecatalogue.data.source.remote.RemoteDataSource
+import com.aemiralfath.moviecatalogue.data.source.remote.response.DetailMovieResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.DetailTvResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.ItemMovieResponse
+import com.aemiralfath.moviecatalogue.data.source.remote.response.ItemTvResponse
+import com.aemiralfath.moviecatalogue.vo.Resource
 
 class FakeMainRepository(private val remoteDataSource: RemoteDataSource) :
     MainDataSource {
