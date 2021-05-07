@@ -9,7 +9,8 @@ import com.aemiralfath.moviecatalogue.vo.Resource
 
 class MovieViewModel(private val movieRepository: MainRepository) : ViewModel() {
 
-    fun getMovie(): LiveData<Resource<PagedList<MovieEntity>>> = movieRepository.getAllMovies()
+    fun getMovie(sort: String): LiveData<Resource<PagedList<MovieEntity>>> =
+        movieRepository.getAllMovies(sort)
 
     fun getFavoriteMovie(): LiveData<PagedList<MovieEntity>> = movieRepository.getFavoriteMovie()
 

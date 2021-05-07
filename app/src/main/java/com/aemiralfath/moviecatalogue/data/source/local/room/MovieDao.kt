@@ -3,6 +3,7 @@ package com.aemiralfath.moviecatalogue.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
 
@@ -38,5 +39,11 @@ interface MovieDao {
 
     @Update
     fun updateTv(tv: TvEntity)
+
+    @RawQuery(observedEntities = [MovieEntity::class])
+    fun getMovieSort(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
+
+    @RawQuery(observedEntities = [TvEntity::class])
+    fun getTvSort(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity>
 
 }

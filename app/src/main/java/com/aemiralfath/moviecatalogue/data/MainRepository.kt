@@ -13,6 +13,7 @@ import com.aemiralfath.moviecatalogue.data.source.remote.response.DetailTvRespon
 import com.aemiralfath.moviecatalogue.data.source.remote.response.MovieResponse
 import com.aemiralfath.moviecatalogue.data.source.remote.response.TvResponse
 import com.aemiralfath.moviecatalogue.utils.AppExecutors
+import com.aemiralfath.moviecatalogue.utils.SortUtils
 import com.aemiralfath.moviecatalogue.vo.Resource
 
 class MainRepository(
@@ -22,16 +23,17 @@ class MainRepository(
 ) :
     MainDataSource {
 
-    override fun getAllMovies(): LiveData<Resource<PagedList<MovieEntity>>> {
+    override fun getAllMovies(sort: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return object :
             NetworkBoundResource<PagedList<MovieEntity>, MovieResponse>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
+                val query = SortUtils.getSortedQuery(sort, MovieEntity.TABLE_NAME)
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
                     .setInitialLoadSizeHint(20)
                     .setPageSize(20)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllMovies(), config).build()
+                return LivePagedListBuilder(localDataSource.getMovieSort(query), config).build()
             }
 
             override fun shouldFetch(data: PagedList<MovieEntity>?): Boolean =
@@ -67,15 +69,16 @@ class MainRepository(
         }.asLiveData()
     }
 
-    override fun getAllTv(): LiveData<Resource<PagedList<TvEntity>>> {
+    override fun getAllTv(sort: String): LiveData<Resource<PagedList<TvEntity>>> {
         return object : NetworkBoundResource<PagedList<TvEntity>, TvResponse>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<TvEntity>> {
+                val query = SortUtils.getSortedQuery(sort, TvEntity.TABLE_NAME)
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
                     .setInitialLoadSizeHint(20)
                     .setPageSize(20)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllTv(), config).build()
+                return LivePagedListBuilder(localDataSource.getTvSort(query), config).build()
             }
 
             override fun shouldFetch(data: PagedList<TvEntity>?): Boolean =

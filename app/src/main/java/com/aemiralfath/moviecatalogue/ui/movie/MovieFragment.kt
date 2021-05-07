@@ -1,13 +1,17 @@
 package com.aemiralfath.moviecatalogue.ui.movie
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aemiralfath.moviecatalogue.R
+import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.databinding.FragmentMovieBinding
+import com.aemiralfath.moviecatalogue.utils.SortUtils
+import com.aemiralfath.moviecatalogue.vo.Resource
 import com.aemiralfath.moviecatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -15,6 +19,7 @@ class MovieFragment : Fragment() {
 
     private val movieViewModel: MovieViewModel by viewModel()
     private lateinit var binding: FragmentMovieBinding
+    private lateinit var movieAdapter: MovieAdapter
     private var state: Boolean = false
 
     companion object {
@@ -31,6 +36,7 @@ class MovieFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             state = it.getBoolean(STATE)
         }
@@ -41,6 +47,7 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMovieBinding.inflate(layoutInflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -50,29 +57,15 @@ class MovieFragment : Fragment() {
         if (activity != null) {
             with(binding.rvHomeMovie) {
 
-                val movieAdapter = MovieAdapter()
+                movieAdapter = MovieAdapter()
 
                 if (state) {
                     movieViewModel.getFavoriteMovie().observe(viewLifecycleOwner, {
                         movieAdapter.submitList(it)
                     })
                 } else {
-                    movieViewModel.getMovie().observe(viewLifecycleOwner, {
-                        when (it.status) {
-                            Status.SUCCESS -> {
-                                showLoading(false)
-                                it.data?.let { data -> movieAdapter.submitList(data) }
-                            }
-                            Status.LOADING -> {
-                                showLoading(true)
-                            }
-                            Status.ERROR -> {
-                                showLoading(false)
-                                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
-                                    .show()
-                            }
-                        }
-                    })
+                    movieViewModel.getMovie(SortUtils.NEWEST)
+                        .observe(viewLifecycleOwner, movieObserver)
                 }
 
                 layoutManager = LinearLayoutManager(context)
@@ -80,6 +73,40 @@ class MovieFragment : Fragment() {
                 adapter = movieAdapter
             }
         }
+    }
+
+    private val movieObserver = Observer<Resource<PagedList<MovieEntity>>> {
+        when (it.status) {
+            Status.SUCCESS -> {
+                showLoading(false)
+                it.data?.let { data -> movieAdapter.submitList(data) }
+            }
+            Status.LOADING -> {
+                showLoading(true)
+            }
+            Status.ERROR -> {
+                showLoading(false)
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.menu_main, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var sort = ""
+        when (item.itemId) {
+            R.id.action_newest -> sort = SortUtils.NEWEST
+            R.id.action_oldest -> sort = SortUtils.OLDEST
+            R.id.action_character -> sort = SortUtils.CHARACTER
+        }
+        movieViewModel.getMovie(sort).observe(this, movieObserver)
+        item.isChecked = true
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showLoading(state: Boolean) {

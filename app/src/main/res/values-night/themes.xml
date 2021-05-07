@@ -13,5 +13,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:itemTextAppearance">@style/MyActionBar.MenuTextStyle</item>
+    </style>
+
+    <style name="MyActionBar.MenuTextStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">@color/black_700</item>
     </style>
 </resources>

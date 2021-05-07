@@ -20,4 +20,7 @@
     <string name="share_text">Watch %s now with me!</string>
     <string name="favorite">Favorite</string>
     <string name="undo">Undo</string>
+    <string name="menu_newest">Newest</string>
+    <string name="menu_oldest">Oldest</string>
+    <string name="menu_character">Character</string>
 </resources>

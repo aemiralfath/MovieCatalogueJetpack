@@ -32,4 +32,10 @@ data class MovieEntity(
     var voteCount: Int? = null,
 
     var favorite: Boolean = false
-) : Parcelable
+) : Parcelable{
+
+    companion object{
+        const val TABLE_NAME = "MovieEntities"
+    }
+
+}

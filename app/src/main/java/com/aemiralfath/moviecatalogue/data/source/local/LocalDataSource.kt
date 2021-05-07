@@ -2,6 +2,7 @@ package com.aemiralfath.moviecatalogue.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.data.source.local.room.MovieDao
@@ -33,5 +34,11 @@ class LocalDataSource(private val movieDao: MovieDao) {
     fun insertMovies(movies: List<MovieEntity>) = movieDao.insertMovies(movies)
 
     fun insertTv(tv: List<TvEntity>) = movieDao.insertTv(tv)
+
+    fun getMovieSort(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity> =
+        movieDao.getMovieSort(query)
+
+    fun getTvSort(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity> =
+        movieDao.getTvSort(query)
 
 }
