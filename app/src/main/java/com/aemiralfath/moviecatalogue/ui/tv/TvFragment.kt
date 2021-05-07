@@ -15,6 +15,26 @@ class TvFragment : Fragment() {
 
     private val tvViewModel: TvViewModel by viewModel()
     private lateinit var binding: FragmentTvBinding
+    private var state: Boolean = false
+
+    companion object {
+        private const val STATE = "state"
+
+        @JvmStatic
+        fun newInstance(state: Boolean) =
+            TvFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(STATE, state)
+                }
+            }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            state = it.getBoolean(STATE)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,21 +52,30 @@ class TvFragment : Fragment() {
 
                 val tvAdapter = TvAdapter()
 
-                tvViewModel.getTv().observe(viewLifecycleOwner, {
-                    when (it.status) {
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            it.data?.let { data -> tvAdapter.submitList(data) }
+                if (state) {
+                    tvViewModel.getFavoriteTv().observe(viewLifecycleOwner, {
+                        tvAdapter.submitList(it)
+                    })
+                } else {
+                    tvViewModel.getTv().observe(viewLifecycleOwner, {
+                        when (it.status) {
+                            Status.SUCCESS -> {
+                                showLoading(false)
+                                it.data?.let { data -> tvAdapter.submitList(data) }
+                            }
+                            Status.LOADING -> {
+                                showLoading(true)
+                            }
+                            Status.ERROR -> {
+                                showLoading(false)
+                                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                                    .show()
+                            }
                         }
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-                        Status.ERROR -> {
-                            showLoading(false)
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                        }
-                    }
-                })
+                    })
+                }
+
+
 
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)

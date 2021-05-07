@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieCatalogue"
         tools:ignore="AllowBackup">
+        <activity android:name=".ui.favorite.FavoriteActivity" />
         <activity
             android:name=".ui.splashscreen.SplashScreenActivity"
             android:theme="@style/SplashScreen">
@@ -24,20 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.aemiralfath.moviecatalogue.ui.detail.tv.DetailTvActivity"
-            android:parentActivityName=".ui.home.HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.HomeActivity" />
-        </activity>
-        <activity
-            android:name="com.aemiralfath.moviecatalogue.ui.detail.movie.DetailMovieActivity"
-            android:parentActivityName=".ui.home.HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.HomeActivity" />
-        </activity>
+        <activity android:name=".ui.detail.tv.DetailTvActivity" />
+        <activity android:name=".ui.detail.movie.DetailMovieActivity"/>
         <activity
             android:name=".ui.home.HomeActivity"
             android:label="@string/app_name"

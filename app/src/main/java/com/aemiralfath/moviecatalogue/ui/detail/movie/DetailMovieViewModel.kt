@@ -9,4 +9,9 @@ import com.aemiralfath.moviecatalogue.vo.Resource
 class DetailMovieViewModel(private val movieRepository: MainRepository) : ViewModel() {
 
     fun getMovie(id: Int): LiveData<Resource<MovieEntity>> = movieRepository.getMovie(id)
+
+    fun setFavorite(movieData: MovieEntity) {
+        val newState = !movieData.favorite
+        movieRepository.setMovieFavorite(movieData, newState)
+    }
 }

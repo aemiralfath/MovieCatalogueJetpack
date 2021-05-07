@@ -18,4 +18,6 @@
     <string name="share_movie">Share this movie now</string>
     <string name="share_tv">Share this tv show now</string>
     <string name="share_text">Watch %s now with me!</string>
+    <string name="favorite">Favorite</string>
+    <string name="undo">Undo</string>
 </resources>

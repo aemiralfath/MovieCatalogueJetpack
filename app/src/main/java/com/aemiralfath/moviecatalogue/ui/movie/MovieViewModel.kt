@@ -11,4 +11,6 @@ class MovieViewModel(private val movieRepository: MainRepository) : ViewModel() 
 
     fun getMovie(): LiveData<Resource<PagedList<MovieEntity>>> = movieRepository.getAllMovies()
 
+    fun getFavoriteMovie(): LiveData<PagedList<MovieEntity>> = movieRepository.getFavoriteMovie()
+
 }

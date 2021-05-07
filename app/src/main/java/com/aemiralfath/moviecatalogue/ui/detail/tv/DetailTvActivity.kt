@@ -1,16 +1,20 @@
 package com.aemiralfath.moviecatalogue.ui.detail.tv
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import com.aemiralfath.moviecatalogue.R
 import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.databinding.ActivityDetailTvBinding
 import com.aemiralfath.moviecatalogue.vo.Status
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailTvActivity : AppCompatActivity() {
@@ -19,30 +23,37 @@ class DetailTvActivity : AppCompatActivity() {
         const val EXTRA_TV = "extra_tv"
     }
 
+    private var id: Int? = null
+    private var menu: Menu? = null
+    private var tvEntity: TvEntity? = null
+
     private lateinit var binding: ActivityDetailTvBinding
+    private val viewModel: DetailTvViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTvBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel: DetailTvViewModel by viewModel()
+        id = intent.getParcelableExtra<TvEntity>(EXTRA_TV)?.id
 
-        val id = intent.getParcelableExtra<TvEntity>(EXTRA_TV)?.id
-
-        if (id != null) {
-            viewModel.getTv(id).observe(this, {
-                when (it.status) {
+        id?.let {
+            viewModel.getTv(it).observe(this, { tv ->
+                when (tv.status) {
                     Status.SUCCESS -> {
                         showLoading(false)
-                        it.data?.let { data -> populateView(data) }
+                        tv.data?.let { data ->
+                            populateView(data)
+                            tvEntity = data
+                        }
                     }
                     Status.LOADING -> {
                         showLoading(true)
                     }
                     Status.ERROR -> {
                         showLoading(false)
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, tv.message, Toast.LENGTH_LONG).show()
                     }
                 }
             })
@@ -80,6 +91,66 @@ class DetailTvActivity : AppCompatActivity() {
                     .setText(resources.getString(R.string.share_text, tv.name))
                     .startChooser()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_detail, menu)
+        this.menu = menu
+        id?.let {
+            viewModel.getTv(it).observe(this, { tv ->
+                if (tv != null) {
+                    when (tv.status) {
+                        Status.LOADING -> showLoading(true)
+                        Status.SUCCESS -> if (tv.data != null) {
+                            showLoading(false)
+                            setBookmarkState(tv.data.favorite)
+                        }
+                        Status.ERROR -> {
+                            showLoading(false)
+                            Toast.makeText(
+                                applicationContext,
+                                "Terjadi kesalahan",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            })
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            R.id.action_favorite -> {
+                tvEntity?.let { tv ->
+                    viewModel.setFavorite(tv)
+                    val state = !tv.favorite
+                    setBookmarkState(tv.favorite)
+                    if (state) {
+                        Snackbar.make(binding.root, "Add to Favorite", Snackbar.LENGTH_LONG).show()
+                    } else {
+                        Snackbar.make(binding.root, "Remove Favorite", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setBookmarkState(state: Boolean) {
+        if (menu == null) return
+        val menuItem = menu?.findItem(R.id.action_favorite)
+        if (state) {
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorited)
+        } else {
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
         }
     }
 

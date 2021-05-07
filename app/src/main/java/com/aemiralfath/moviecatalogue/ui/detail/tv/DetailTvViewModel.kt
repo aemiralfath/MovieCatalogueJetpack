@@ -10,4 +10,8 @@ class DetailTvViewModel(private val movieRepository: MainRepository) : ViewModel
 
     fun getTv(id: Int): LiveData<Resource<TvEntity>> = movieRepository.getTv(id)
 
+    fun setFavorite(tvData: TvEntity) {
+        val newState = !tvData.favorite
+        movieRepository.setTvFavorite(tvData, newState)
+    }
 }

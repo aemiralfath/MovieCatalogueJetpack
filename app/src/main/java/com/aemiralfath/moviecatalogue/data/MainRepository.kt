@@ -176,4 +176,30 @@ class MainRepository(
             }
         }.asLiveData()
     }
+
+    override fun getFavoriteMovie(): LiveData<PagedList<MovieEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(20)
+            .setPageSize(20)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
+    }
+
+    override fun getFavoriteTv(): LiveData<PagedList<TvEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(20)
+            .setPageSize(20)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteTv(), config).build()
+    }
+
+    override fun setMovieFavorite(movie: MovieEntity, state: Boolean) =
+        appExecutors.diskIO().execute { localDataSource.setFavoriteMovie(movie, state) }
+
+    override fun setTvFavorite(tv: TvEntity, state: Boolean) {
+        appExecutors.diskIO().execute { localDataSource.setFavoriteTv(tv, state) }
+    }
+
 }

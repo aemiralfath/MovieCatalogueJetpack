@@ -11,4 +11,6 @@ class TvViewModel(private val movieRepository: MainRepository) : ViewModel() {
 
     fun getTv(): LiveData<Resource<PagedList<TvEntity>>> = movieRepository.getAllTv()
 
+    fun getFavoriteTv(): LiveData<PagedList<TvEntity>> = movieRepository.getFavoriteTv()
+
 }
