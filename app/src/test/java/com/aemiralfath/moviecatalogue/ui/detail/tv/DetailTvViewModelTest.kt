@@ -59,20 +59,46 @@ class DetailTvViewModelTest {
         val tv = MutableLiveData<Resource<TvEntity>>()
         tv.postValue(response)
 
-        `when`(dummyTv.id?.let { movieRepository.getTv(it) }).thenReturn(tv)
-        val tvEntity = dummyTv.id?.let { viewModel.getTv(it).value }
-        dummyTv.id?.let { verify(movieRepository).getTv(it) }
+        dummyTv.id.let {
+            `when`(movieRepository.getTv(it)).thenReturn(tv)
+            val tvEntity = viewModel.getTv(it).value
+            verify(movieRepository).getTv(it)
 
-        assertNotNull(tvEntity)
-        assertEquals(dummyTv.id, tvEntity?.data?.id)
-        assertEquals(dummyTv.name, tvEntity?.data?.name)
-        assertEquals(dummyTv.firstAirDate, tvEntity?.data?.firstAirDate)
-        assertEquals(dummyTv.voteAverage, tvEntity?.data?.voteAverage)
-        assertEquals(dummyTv.originalLanguage, tvEntity?.data?.originalLanguage)
-        assertEquals(dummyTv.popularity, tvEntity?.data?.popularity)
-        assertEquals(dummyTv.voteCount, tvEntity?.data?.voteCount)
+            assertNotNull(tvEntity)
+            assertEquals(dummyTv.id, tvEntity?.data?.id)
+            assertEquals(dummyTv.name, tvEntity?.data?.name)
+            assertEquals(dummyTv.firstAirDate, tvEntity?.data?.firstAirDate)
+            assertEquals(dummyTv.voteAverage, tvEntity?.data?.voteAverage)
+            assertEquals(dummyTv.originalLanguage, tvEntity?.data?.originalLanguage)
+            assertEquals(dummyTv.popularity, tvEntity?.data?.popularity)
+            assertEquals(dummyTv.voteCount, tvEntity?.data?.voteCount)
 
-        dummyTv.id?.let { viewModel.getTv(it).observeForever(observer) }
-        verify(observer).onChanged(response)
+            viewModel.getTv(it).observeForever(observer)
+            verify(observer).onChanged(response)
+        }
+    }
+
+    @Test
+    fun setFavorite() {
+        val response = Resource(Status.SUCCESS, dummyTv, "success")
+        val tv = MutableLiveData<Resource<TvEntity>>()
+
+        tv.postValue(response)
+        movieRepository.setTvFavorite(dummyTv, true)
+
+        dummyTv.id.let {
+            `when`(movieRepository.getTv(it)).thenReturn(tv)
+
+            val tvEntity = viewModel.getTv(it).value
+            verify(movieRepository).getTv(it)
+
+            dummyTv.favorite = true
+            assertNotNull(tvEntity)
+            assertEquals(dummyTv.id, tvEntity?.data?.id)
+            assertEquals(dummyTv.favorite, tvEntity?.data?.favorite)
+
+            viewModel.getTv(it).observeForever(observer)
+            verify(observer).onChanged(response)
+        }
     }
 }

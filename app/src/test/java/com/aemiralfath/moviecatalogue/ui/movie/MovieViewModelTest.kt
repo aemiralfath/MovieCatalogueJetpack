@@ -5,12 +5,11 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
-import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.aemiralfath.moviecatalogue.vo.Resource
-import com.aemiralfath.moviecatalogue.vo.Status
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -42,7 +41,13 @@ class MovieViewModelTest {
     private lateinit var movieRepository: MainRepository
 
     @Mock
-    private lateinit var observer: Observer<Resource<List<MovieEntity>>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var observerFavorite: Observer<PagedList<MovieEntity>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MovieEntity>
 
     @Before
     fun setUp() {
@@ -52,33 +57,54 @@ class MovieViewModelTest {
 
     @Test
     fun getMovie() {
-        val dummyMovies = Resource(Status.SUCCESS, DataDummy.loadMovie(context), "success")
-        val movies = MutableLiveData<Resource<List<MovieEntity>>>()
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(20)
+
+        val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllMovies()).thenReturn(movies)
-        val movieEntities = viewModel.getMovie().value
+        val movieEntities = viewModel.getMovie().value?.data
         verify(movieRepository).getAllMovies()
-
         assertNotNull(movieEntities)
-        assertEquals(20, movieEntities?.data?.size)
+        assertEquals(20, movieEntities?.size)
 
         viewModel.getMovie().observeForever(observer)
         verify(observer).onChanged(dummyMovies)
     }
 
     @Test
+    fun getFavoriteMovie() {
+        val dummyFavorite = pagedList
+        `when`(dummyFavorite.size).thenReturn(5)
+
+        val movies = MutableLiveData<PagedList<MovieEntity>>()
+        movies.value = dummyFavorite
+
+        `when`(movieRepository.getFavoriteMovie()).thenReturn(movies)
+        val movieEntities = viewModel.getFavoriteMovie().value
+        verify(movieRepository).getFavoriteMovie()
+
+        assertNotNull(movieEntities)
+        assertEquals(5, movieEntities?.size)
+
+        viewModel.getFavoriteMovie().observeForever(observerFavorite)
+        verify(observerFavorite).onChanged(dummyFavorite)
+    }
+
+    @Test
     fun getMovieEmpty() {
-        val dummyMovies = Resource(Status.SUCCESS, listOf<MovieEntity>(), "success")
-        val movies = MutableLiveData<Resource<List<MovieEntity>>>()
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(0)
+
+        val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllMovies()).thenReturn(movies)
-        val movieEntities = viewModel.getMovie().value
+        val movieEntities = viewModel.getMovie().value?.data
         verify(movieRepository).getAllMovies()
-
         assertNotNull(movieEntities)
-        assertEquals(0, movieEntities?.data?.size)
+        assertEquals(0, movieEntities?.size)
 
         viewModel.getMovie().observeForever(observer)
         verify(observer).onChanged(dummyMovies)
@@ -86,8 +112,9 @@ class MovieViewModelTest {
 
     @Test
     fun getMovieFailed() {
-        val dummyMovies = Resource(Status.ERROR, null, "error")
-        val movies = MutableLiveData<Resource<List<MovieEntity>>>()
+        val dummyMovies = Resource.error("fail", pagedList)
+
+        val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllMovies()).thenReturn(movies)
@@ -95,11 +122,9 @@ class MovieViewModelTest {
         verify(movieRepository).getAllMovies()
 
         assertNotNull(movieEntities)
-        assertEquals("error", movieEntities?.message)
+        assertEquals("fail", movieEntities?.message)
 
         viewModel.getMovie().observeForever(observer)
         verify(observer).onChanged(dummyMovies)
     }
-
-
 }

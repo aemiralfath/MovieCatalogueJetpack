@@ -5,12 +5,11 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
-import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.aemiralfath.moviecatalogue.vo.Resource
-import com.aemiralfath.moviecatalogue.vo.Status
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -42,7 +41,13 @@ class TvViewModelTest {
     private lateinit var movieRepository: MainRepository
 
     @Mock
-    private lateinit var observer: Observer<Resource<List<TvEntity>>>
+    private lateinit var observer: Observer<Resource<PagedList<TvEntity>>>
+
+    @Mock
+    private lateinit var observerFavorite: Observer<PagedList<TvEntity>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<TvEntity>
 
     @Before
     fun setUp() {
@@ -52,33 +57,55 @@ class TvViewModelTest {
 
     @Test
     fun getTv() {
-        val dummyTv = Resource(Status.SUCCESS, DataDummy.loadTv(context), "success")
-        val tv = MutableLiveData<Resource<List<TvEntity>>>()
+        val dummyTv = Resource.success(pagedList)
+        `when`(dummyTv.data?.size).thenReturn(20)
+
+        val tv = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tv.value = dummyTv
 
         `when`(movieRepository.getAllTv()).thenReturn(tv)
-        val tvEntities = viewModel.getTv().value
+        val tvEntities = viewModel.getTv().value?.data
         verify(movieRepository).getAllTv()
 
         assertNotNull(tvEntities)
-        assertEquals(20, tvEntities?.data?.size)
+        assertEquals(20, tvEntities?.size)
 
         viewModel.getTv().observeForever(observer)
         verify(observer).onChanged(dummyTv)
     }
 
     @Test
+    fun getFavoriteTv() {
+        val dummyFavorite = pagedList
+        `when`(dummyFavorite.size).thenReturn(5)
+
+        val tv = MutableLiveData<PagedList<TvEntity>>()
+        tv.value = dummyFavorite
+
+        `when`(movieRepository.getFavoriteTv()).thenReturn(tv)
+        val tvEntities = viewModel.getFavoriteTv().value
+        verify(movieRepository).getFavoriteTv()
+
+        assertNotNull(tvEntities)
+        assertEquals(5, tvEntities?.size)
+
+        viewModel.getFavoriteTv().observeForever(observerFavorite)
+        verify(observerFavorite).onChanged(dummyFavorite)
+    }
+
+    @Test
     fun getTvEmpty() {
-        val dummyTv = Resource(Status.SUCCESS, listOf<TvEntity>(), "success")
-        val tv = MutableLiveData<Resource<List<TvEntity>>>()
+        val dummyTv = Resource.success(pagedList)
+        `when`(dummyTv.data?.size).thenReturn(0)
+
+        val tv = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tv.value = dummyTv
 
         `when`(movieRepository.getAllTv()).thenReturn(tv)
-        val tvEntities = viewModel.getTv().value
+        val tvEntities = viewModel.getTv().value?.data
         verify(movieRepository).getAllTv()
-
         assertNotNull(tvEntities)
-        assertEquals(0, tvEntities?.data?.size)
+        assertEquals(0, tvEntities?.size)
 
         viewModel.getTv().observeForever(observer)
         verify(observer).onChanged(dummyTv)
@@ -86,8 +113,9 @@ class TvViewModelTest {
 
     @Test
     fun getTvFailed() {
-        val dummyTv = Resource(Status.ERROR, null, "error")
-        val tv = MutableLiveData<Resource<List<TvEntity>>>()
+        val dummyTv = Resource.error("fail", pagedList)
+
+        val tv = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tv.value = dummyTv
 
         `when`(movieRepository.getAllTv()).thenReturn(tv)
@@ -95,7 +123,7 @@ class TvViewModelTest {
         verify(movieRepository).getAllTv()
 
         assertNotNull(tvEntities)
-        assertEquals("error", tvEntities?.message)
+        assertEquals("fail", tvEntities?.message)
 
         viewModel.getTv().observeForever(observer)
         verify(observer).onChanged(dummyTv)
