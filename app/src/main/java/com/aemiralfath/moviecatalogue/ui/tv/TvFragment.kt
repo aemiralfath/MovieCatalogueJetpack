@@ -1,8 +1,18 @@
 package com.aemiralfath.moviecatalogue.ui.tv
 
+import android.app.Activity
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
@@ -20,7 +30,10 @@ class TvFragment : Fragment() {
     private val tvViewModel: TvViewModel by viewModel()
     private lateinit var binding: FragmentTvBinding
     private lateinit var tvAdapter: TvAdapter
+
+    private var querySearch: String = ""
     private var state: Boolean = false
+    private var sortType: String = SortUtils.NEWEST
 
     companion object {
         private const val STATE = "state"
@@ -54,21 +67,74 @@ class TvFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            with(binding.rvHomeTv) {
+            with(binding) {
 
                 tvAdapter = TvAdapter()
 
                 if (state) {
+                    svTv.visibility = View.GONE
                     tvViewModel.getFavoriteTv().observe(viewLifecycleOwner, {
                         tvAdapter.submitList(it)
                     })
                 } else {
-                    tvViewModel.getTv(SortUtils.NEWEST).observe(viewLifecycleOwner, tvObserver)
+                    svTv.visibility = View.VISIBLE
+                    tvViewModel.getTv(SortUtils.NEWEST, querySearch)
+                        .observe(viewLifecycleOwner, tvObserver)
+
+                    val searchManager =
+                        requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+                    svTv.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+                    svTv.isActivated = true
+                    svTv.queryHint = resources.getString(R.string.search_movie)
+                    svTv.onActionViewExpanded()
+                    svTv.isIconified = false
+                    svTv.clearFocus()
+
+                    svTv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            query?.let {
+                                tvViewModel.getTv(sortType, it)
+                                    .observe(viewLifecycleOwner, tvObserver)
+                                querySearch = it
+                            }
+                            requireActivity().hideSoftKeyboard()
+                            return true
+                        }
+
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            return if (newText.isNullOrBlank()) {
+                                newText?.let {
+                                    tvViewModel.getTv(sortType, it)
+                                        .observe(viewLifecycleOwner, tvObserver)
+                                }
+                                true
+                            } else {
+                                showLoading(true)
+                                true
+                            }
+                        }
+                    })
+
+                    val idBtn = svTv.context.resources.getIdentifier(
+                        "android:id/search_close_btn",
+                        null,
+                        null
+                    )
+                    val closeButton = svTv.findViewById<ImageView>(idBtn)
+
+                    closeButton.setOnClickListener {
+                        querySearch = ""
+                        tvViewModel.getTv(sortType, querySearch)
+                            .observe(viewLifecycleOwner, tvObserver)
+                        svTv.setQuery("", false)
+                        requireActivity().hideSoftKeyboard()
+                    }
+
                 }
 
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = tvAdapter
+                rvHomeTv.layoutManager = LinearLayoutManager(context)
+                rvHomeTv.setHasFixedSize(true)
+                rvHomeTv.adapter = tvAdapter
             }
         }
     }
@@ -97,12 +163,21 @@ class TvFragment : Fragment() {
             R.id.action_oldest -> sort = SortUtils.OLDEST
             R.id.action_character -> sort = SortUtils.CHARACTER
         }
-        tvViewModel.getTv(sort).observe(this, tvObserver)
+        tvViewModel.getTv(sort, querySearch).observe(this, tvObserver)
         item.isChecked = true
         return super.onOptionsItemSelected(item)
     }
 
+    private fun Activity.hideSoftKeyboard() {
+        currentFocus?.let {
+            val inputMethodManager =
+                ContextCompat.getSystemService(this, InputMethodManager::class.java)!!
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+
     private fun showLoading(state: Boolean) {
         binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
+        binding.rvHomeTv.visibility = if (state) View.GONE else View.VISIBLE
     }
 }

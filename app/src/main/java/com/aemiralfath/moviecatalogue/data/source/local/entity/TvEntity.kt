@@ -29,10 +29,12 @@ data class TvEntity(
 
     var voteCount: Int? = null,
 
-    var favorite: Boolean = false
+    var favorite: Boolean = false,
+
+    var homepage: Boolean = false
 ) : Parcelable {
 
-    companion object{
+    companion object {
         const val TABLE_NAME = "TvEntities"
     }
 

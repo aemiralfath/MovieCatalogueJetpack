@@ -13,6 +13,7 @@ import com.aemiralfath.moviecatalogue.data.source.remote.response.DetailTvRespon
 import com.aemiralfath.moviecatalogue.data.source.remote.response.MovieResponse
 import com.aemiralfath.moviecatalogue.data.source.remote.response.TvResponse
 import com.aemiralfath.moviecatalogue.utils.AppExecutors
+import com.aemiralfath.moviecatalogue.utils.SearchUtils
 import com.aemiralfath.moviecatalogue.utils.SortUtils
 import com.aemiralfath.moviecatalogue.vo.Resource
 
@@ -23,24 +24,44 @@ class MainRepository(
 ) :
     MainDataSource {
 
-    override fun getAllMovies(sort: String): LiveData<Resource<PagedList<MovieEntity>>> {
+    override fun getAllMovies(
+        sort: String,
+        query: String
+    ): LiveData<Resource<PagedList<MovieEntity>>> {
         return object :
             NetworkBoundResource<PagedList<MovieEntity>, MovieResponse>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<MovieEntity>> {
-                val query = SortUtils.getSortedQuery(sort, MovieEntity.TABLE_NAME)
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
                     .setInitialLoadSizeHint(20)
                     .setPageSize(20)
                     .build()
-                return LivePagedListBuilder(localDataSource.getMovieSort(query), config).build()
+
+                return if (query.isBlank()) {
+                    val sortType = SortUtils.getSortedQuery(sort, 1, MovieEntity.TABLE_NAME)
+                    LivePagedListBuilder(
+                        localDataSource.getMovieQuery(sortType),
+                        config
+                    ).build()
+                } else {
+                    val searchType = SearchUtils.getSearchQuery(query, sort, MovieEntity.TABLE_NAME)
+                    LivePagedListBuilder(
+                        localDataSource.getMovieQuery(searchType),
+                        config
+                    ).build()
+                }
             }
 
             override fun shouldFetch(data: PagedList<MovieEntity>?): Boolean =
                 data == null || data.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<MovieResponse>> =
-                remoteDataSource.getAllMovies()
+            override fun createCall(): LiveData<ApiResponse<MovieResponse>> {
+                return if (query.isBlank()) {
+                    remoteDataSource.getAllMovies()
+                } else {
+                    remoteDataSource.searchMovies(query)
+                }
+            }
 
             override fun saveCallResult(data: MovieResponse) {
                 val movieList = ArrayList<MovieEntity>()
@@ -58,6 +79,8 @@ class MainRepository(
                                 it,
                                 response.adult,
                                 response.voteCount,
+                                false,
+                                query.isBlank()
                             )
                         }
                         movie?.let { movieList.add(it) }
@@ -69,23 +92,39 @@ class MainRepository(
         }.asLiveData()
     }
 
-    override fun getAllTv(sort: String): LiveData<Resource<PagedList<TvEntity>>> {
+    override fun getAllTv(sort: String, query: String): LiveData<Resource<PagedList<TvEntity>>> {
         return object : NetworkBoundResource<PagedList<TvEntity>, TvResponse>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<TvEntity>> {
-                val query = SortUtils.getSortedQuery(sort, TvEntity.TABLE_NAME)
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
                     .setInitialLoadSizeHint(20)
                     .setPageSize(20)
                     .build()
-                return LivePagedListBuilder(localDataSource.getTvSort(query), config).build()
+                return if (query.isBlank()) {
+                    val sortType = SortUtils.getSortedQuery(sort, 1, TvEntity.TABLE_NAME)
+                    LivePagedListBuilder(
+                        localDataSource.getTvQuery(sortType),
+                        config
+                    ).build()
+                } else {
+                    val searchType = SearchUtils.getSearchQuery(query, sort, TvEntity.TABLE_NAME)
+                    LivePagedListBuilder(
+                        localDataSource.getTvQuery(searchType),
+                        config
+                    ).build()
+                }
             }
 
             override fun shouldFetch(data: PagedList<TvEntity>?): Boolean =
                 data == null || data.isEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<TvResponse>> =
-                remoteDataSource.getAllTv()
+            override fun createCall(): LiveData<ApiResponse<TvResponse>> {
+                return if (query.isBlank()) {
+                    remoteDataSource.getAllTv()
+                } else {
+                    remoteDataSource.searchTv(query)
+                }
+            }
 
             override fun saveCallResult(data: TvResponse) {
                 val tvList = ArrayList<TvEntity>()
@@ -102,6 +141,8 @@ class MainRepository(
                                 response.name,
                                 it,
                                 response.voteCount,
+                                false,
+                                query.isBlank()
                             )
                         }
                         tv?.let { tvList.add(it) }

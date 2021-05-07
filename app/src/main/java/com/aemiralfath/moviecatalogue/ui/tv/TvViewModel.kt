@@ -9,8 +9,8 @@ import com.aemiralfath.moviecatalogue.vo.Resource
 
 class TvViewModel(private val movieRepository: MainRepository) : ViewModel() {
 
-    fun getTv(sort: String): LiveData<Resource<PagedList<TvEntity>>> =
-        movieRepository.getAllTv(sort)
+    fun getTv(sort: String, query: String): LiveData<Resource<PagedList<TvEntity>>> =
+        movieRepository.getAllTv(sort, query)
 
     fun getFavoriteTv(): LiveData<PagedList<TvEntity>> = movieRepository.getFavoriteTv()
 

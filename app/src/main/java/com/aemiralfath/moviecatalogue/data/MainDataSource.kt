@@ -2,15 +2,14 @@ package com.aemiralfath.moviecatalogue.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.vo.Resource
 
 interface MainDataSource {
-    fun getAllMovies(sort: String): LiveData<Resource<PagedList<MovieEntity>>>
+    fun getAllMovies(sort: String, query: String): LiveData<Resource<PagedList<MovieEntity>>>
 
-    fun getAllTv(sort: String): LiveData<Resource<PagedList<TvEntity>>>
+    fun getAllTv(sort: String, query: String): LiveData<Resource<PagedList<TvEntity>>>
 
     fun getMovie(id: Int): LiveData<Resource<MovieEntity>>
 

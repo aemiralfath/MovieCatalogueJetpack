@@ -1,34 +1,34 @@
 package com.aemiralfath.moviecatalogue.utils
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity.Companion.TABLE_NAME
+import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 
-object SortUtils {
-    const val NEWEST = "Newest"
-    const val OLDEST = "Oldest"
-    const val CHARACTER = "CHARACTER"
-
-    fun getSortedQuery(filter: String, default: Int, table: String): SimpleSQLiteQuery {
+object SearchUtils {
+    fun getSearchQuery(query: String, filter: String, table: String): SimpleSQLiteQuery {
         val simpleQuery = StringBuilder().append("SELECT * FROM $table ")
-        simpleQuery.append("WHERE homepage = $default ")
+        if (table == MovieEntity.TABLE_NAME) {
+            simpleQuery.append("WHERE title LIKE '%$query%' ")
+        } else {
+            simpleQuery.append("WHERE name LIKE '%$query%' ")
+        }
 
         when (filter) {
-            NEWEST -> {
-                if (table == TABLE_NAME) {
+            SortUtils.NEWEST -> {
+                if (table == MovieEntity.TABLE_NAME) {
                     simpleQuery.append("ORDER BY releaseDate DESC")
                 } else {
                     simpleQuery.append("ORDER BY firstAirDate DESC")
                 }
             }
-            OLDEST -> {
-                if (table == TABLE_NAME) {
+            SortUtils.OLDEST -> {
+                if (table == MovieEntity.TABLE_NAME) {
                     simpleQuery.append("ORDER BY releaseDate ASC")
                 } else {
                     simpleQuery.append("ORDER BY firstAirDate ASC")
                 }
             }
-            CHARACTER -> {
-                if (table == TABLE_NAME) {
+            SortUtils.CHARACTER -> {
+                if (table == MovieEntity.TABLE_NAME) {
                     simpleQuery.append("ORDER BY title ASC")
                 } else {
                     simpleQuery.append("ORDER BY name ASC")

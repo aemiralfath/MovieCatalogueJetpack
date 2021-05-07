@@ -41,9 +41,9 @@ interface MovieDao {
     fun updateTv(tv: TvEntity)
 
     @RawQuery(observedEntities = [MovieEntity::class])
-    fun getMovieSort(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
+    fun getMovieQuery(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
     @RawQuery(observedEntities = [TvEntity::class])
-    fun getTvSort(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity>
+    fun getTvQuery(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity>
 
 }

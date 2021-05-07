@@ -35,10 +35,10 @@ class LocalDataSource(private val movieDao: MovieDao) {
 
     fun insertTv(tv: List<TvEntity>) = movieDao.insertTv(tv)
 
-    fun getMovieSort(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity> =
-        movieDao.getMovieSort(query)
+    fun getMovieQuery(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity> =
+        movieDao.getMovieQuery(query)
 
-    fun getTvSort(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity> =
-        movieDao.getTvSort(query)
+    fun getTvQuery(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity> =
+        movieDao.getTvQuery(query)
 
 }

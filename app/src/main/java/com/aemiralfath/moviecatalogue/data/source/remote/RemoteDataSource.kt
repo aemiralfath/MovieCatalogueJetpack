@@ -77,6 +77,65 @@ class RemoteDataSource(private val client: ServiceClient) {
         return resultTv
     }
 
+    fun searchMovies(query: String): LiveData<ApiResponse<MovieResponse>> {
+        EspressoIdlingResource.increment()
+        val resultMovie = MutableLiveData<ApiResponse<MovieResponse>>()
+        client.buildServiceClient()
+            .searchMovie(token, query)
+            .enqueue(object : Callback<MovieResponse> {
+                override fun onResponse(
+                    call: Call<MovieResponse>,
+                    response: Response<MovieResponse>
+                ) {
+                    Log.d("MovieGet", response.body().toString())
+                    response.body()?.let {
+                        resultMovie.value = ApiResponse.success(it)
+
+                        if (it.totalResults == 0) {
+                            resultMovie.value = ApiResponse.empty("Empty List", it)
+                        }
+                    }
+                    EspressoIdlingResource.decrement()
+                }
+
+                override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                    Log.d("MovieGet", "Fail")
+                    resultMovie.value = ApiResponse.error(t.message.toString(), null)
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+        return resultMovie
+    }
+
+    fun searchTv(query: String): LiveData<ApiResponse<TvResponse>> {
+        EspressoIdlingResource.increment()
+        val resultTv = MutableLiveData<ApiResponse<TvResponse>>()
+        client.buildServiceClient()
+            .searchTv(token, query)
+            .enqueue(object : Callback<TvResponse> {
+                override fun onResponse(call: Call<TvResponse>, response: Response<TvResponse>) {
+                    Log.d("TvGet", response.body().toString())
+                    response.body()?.let {
+                        resultTv.value = ApiResponse.success(it)
+
+                        if (it.totalResults == 0) {
+                            resultTv.value = ApiResponse.empty("Empty List", it)
+                        }
+                    }
+                    EspressoIdlingResource.decrement()
+                }
+
+                override fun onFailure(call: Call<TvResponse>, t: Throwable) {
+                    Log.d("TvGet", "Fail")
+                    resultTv.value = ApiResponse.error(t.message.toString(), null)
+                    EspressoIdlingResource.decrement()
+                }
+
+            })
+        return resultTv
+    }
+
     fun getMovie(id: Int): LiveData<ApiResponse<DetailMovieResponse>> {
         EspressoIdlingResource.increment()
         val resultDetailMovie = MutableLiveData<ApiResponse<DetailMovieResponse>>()

@@ -32,4 +32,16 @@ interface ServiceRepository {
         @Path("id") id: Int,
         @Query("api_key") key: String
     ): Call<DetailTvResponse>
+
+    @GET("/3/search/movie")
+    fun searchMovie(
+        @Query("api_key") key: String,
+        @Query("query") query: String
+    ): Call<MovieResponse>
+
+    @GET("/3/search/tv")
+    fun searchTv(
+        @Query("api_key") key: String,
+        @Query("query") query: String
+    ): Call<TvResponse>
 }
