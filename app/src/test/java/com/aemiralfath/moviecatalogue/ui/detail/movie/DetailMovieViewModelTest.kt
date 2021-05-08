@@ -59,23 +59,22 @@ class DetailMovieViewModelTest {
         val movie = MutableLiveData<Resource<MovieEntity>>()
         movie.postValue(response)
 
-        dummyMovie.id.let {
-            `when`(movieRepository.getMovie(it)).thenReturn(movie)
-            val movieEntity = viewModel.getMovie(it).value
-            verify(movieRepository).getMovie(it)
+        val id: Int = dummyMovie.id
+        `when`(movieRepository.getMovie(id)).thenReturn(movie)
+        val movieEntity = viewModel.getMovie(id).value
+        verify(movieRepository).getMovie(id)
 
-            assertNotNull(movieEntity)
-            assertEquals(dummyMovie.id, movieEntity?.data?.id)
-            assertEquals(dummyMovie.title, movieEntity?.data?.title)
-            assertEquals(dummyMovie.releaseDate, movieEntity?.data?.releaseDate)
-            assertEquals(dummyMovie.voteAverage, movieEntity?.data?.voteAverage)
-            assertEquals(dummyMovie.originalLanguage, movieEntity?.data?.originalLanguage)
-            assertEquals(dummyMovie.popularity, movieEntity?.data?.popularity)
-            assertEquals(dummyMovie.voteCount, movieEntity?.data?.voteCount)
+        assertNotNull(movieEntity)
+        assertEquals(dummyMovie.id, movieEntity?.data?.id)
+        assertEquals(dummyMovie.title, movieEntity?.data?.title)
+        assertEquals(dummyMovie.releaseDate, movieEntity?.data?.releaseDate)
+        assertEquals(dummyMovie.voteAverage, movieEntity?.data?.voteAverage)
+        assertEquals(dummyMovie.originalLanguage, movieEntity?.data?.originalLanguage)
+        assertEquals(dummyMovie.popularity, movieEntity?.data?.popularity)
+        assertEquals(dummyMovie.voteCount, movieEntity?.data?.voteCount)
 
-            viewModel.getMovie(it).observeForever(observer)
-            verify(observer).onChanged(response)
-        }
+        viewModel.getMovie(id).observeForever(observer)
+        verify(observer).onChanged(response)
     }
 
     @Test
@@ -86,19 +85,18 @@ class DetailMovieViewModelTest {
         movie.postValue(response)
         movieRepository.setMovieFavorite(dummyMovie, true)
 
-        dummyMovie.id.let {
-            `when`(movieRepository.getMovie(it)).thenReturn(movie)
+        val id: Int = dummyMovie.id
+        `when`(movieRepository.getMovie(id)).thenReturn(movie)
 
-            val movieEntity = viewModel.getMovie(it).value
-            verify(movieRepository).getMovie(it)
+        val movieEntity = viewModel.getMovie(id).value
+        verify(movieRepository).getMovie(id)
 
-            dummyMovie.favorite = true
-            assertNotNull(movieEntity)
-            assertEquals(dummyMovie.id, movieEntity?.data?.id)
-            assertEquals(dummyMovie.favorite, movieEntity?.data?.favorite)
+        dummyMovie.favorite = true
+        assertNotNull(movieEntity)
+        assertEquals(dummyMovie.id, movieEntity?.data?.id)
+        assertEquals(dummyMovie.favorite, movieEntity?.data?.favorite)
 
-            viewModel.getMovie(it).observeForever(observer)
-            verify(observer).onChanged(response)
-        }
+        viewModel.getMovie(id).observeForever(observer)
+        verify(observer).onChanged(response)
     }
 }

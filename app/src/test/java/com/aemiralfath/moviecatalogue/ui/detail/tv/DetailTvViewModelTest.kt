@@ -59,23 +59,22 @@ class DetailTvViewModelTest {
         val tv = MutableLiveData<Resource<TvEntity>>()
         tv.postValue(response)
 
-        dummyTv.id.let {
-            `when`(movieRepository.getTv(it)).thenReturn(tv)
-            val tvEntity = viewModel.getTv(it).value
-            verify(movieRepository).getTv(it)
+        val id: Int = dummyTv.id
+        `when`(movieRepository.getTv(id)).thenReturn(tv)
+        val tvEntity = viewModel.getTv(id).value
+        verify(movieRepository).getTv(id)
 
-            assertNotNull(tvEntity)
-            assertEquals(dummyTv.id, tvEntity?.data?.id)
-            assertEquals(dummyTv.name, tvEntity?.data?.name)
-            assertEquals(dummyTv.firstAirDate, tvEntity?.data?.firstAirDate)
-            assertEquals(dummyTv.voteAverage, tvEntity?.data?.voteAverage)
-            assertEquals(dummyTv.originalLanguage, tvEntity?.data?.originalLanguage)
-            assertEquals(dummyTv.popularity, tvEntity?.data?.popularity)
-            assertEquals(dummyTv.voteCount, tvEntity?.data?.voteCount)
+        assertNotNull(tvEntity)
+        assertEquals(dummyTv.id, tvEntity?.data?.id)
+        assertEquals(dummyTv.name, tvEntity?.data?.name)
+        assertEquals(dummyTv.firstAirDate, tvEntity?.data?.firstAirDate)
+        assertEquals(dummyTv.voteAverage, tvEntity?.data?.voteAverage)
+        assertEquals(dummyTv.originalLanguage, tvEntity?.data?.originalLanguage)
+        assertEquals(dummyTv.popularity, tvEntity?.data?.popularity)
+        assertEquals(dummyTv.voteCount, tvEntity?.data?.voteCount)
 
-            viewModel.getTv(it).observeForever(observer)
-            verify(observer).onChanged(response)
-        }
+        viewModel.getTv(id).observeForever(observer)
+        verify(observer).onChanged(response)
     }
 
     @Test
@@ -86,19 +85,18 @@ class DetailTvViewModelTest {
         tv.postValue(response)
         movieRepository.setTvFavorite(dummyTv, true)
 
-        dummyTv.id.let {
-            `when`(movieRepository.getTv(it)).thenReturn(tv)
+        val id: Int = dummyTv.id
+        `when`(movieRepository.getTv(id)).thenReturn(tv)
 
-            val tvEntity = viewModel.getTv(it).value
-            verify(movieRepository).getTv(it)
+        val tvEntity = viewModel.getTv(id).value
+        verify(movieRepository).getTv(id)
 
-            dummyTv.favorite = true
-            assertNotNull(tvEntity)
-            assertEquals(dummyTv.id, tvEntity?.data?.id)
-            assertEquals(dummyTv.favorite, tvEntity?.data?.favorite)
+        dummyTv.favorite = true
+        assertNotNull(tvEntity)
+        assertEquals(dummyTv.id, tvEntity?.data?.id)
+        assertEquals(dummyTv.favorite, tvEntity?.data?.favorite)
 
-            viewModel.getTv(it).observeForever(observer)
-            verify(observer).onChanged(response)
-        }
+        viewModel.getTv(id).observeForever(observer)
+        verify(observer).onChanged(response)
     }
 }
