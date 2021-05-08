@@ -102,16 +102,11 @@ class MovieFragment : Fragment() {
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            return if (newText.isNullOrBlank()) {
-                                newText?.let {
-                                    movieViewModel.getMovie(sortType, it)
-                                        .observe(viewLifecycleOwner, movieObserver)
-                                }
-                                true
-                            } else {
-                                showLoading(true)
-                                true
+                            newText?.let {
+                                movieViewModel.getMovie(sortType, newText)
+                                    .observe(viewLifecycleOwner, movieObserver)
                             }
+                            return true
                         }
                     })
 

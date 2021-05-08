@@ -102,16 +102,11 @@ class TvFragment : Fragment() {
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            return if (newText.isNullOrBlank()) {
-                                newText?.let {
-                                    tvViewModel.getTv(sortType, it)
-                                        .observe(viewLifecycleOwner, tvObserver)
-                                }
-                                true
-                            } else {
-                                showLoading(true)
-                                true
+                            newText?.let {
+                                tvViewModel.getTv(sortType, newText)
+                                    .observe(viewLifecycleOwner, tvObserver)
                             }
+                            return true
                         }
                     })
 
@@ -129,7 +124,6 @@ class TvFragment : Fragment() {
                         svTv.setQuery("", false)
                         requireActivity().hideSoftKeyboard()
                     }
-
                 }
 
                 rvHomeTv.layoutManager = LinearLayoutManager(context)
