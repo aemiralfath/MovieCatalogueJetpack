@@ -1,35 +1,115 @@
-1. Menampilkan dan scroll data movie
+1. Menampilkan movie dan tv show
     - Memastikan rv_home_movie dalam keadaan tampil
-    - Gulir rv_home_movie ke posisi data ke 10
+    - Gulir rv_home_movie ke posisi data ke 15
+    - Melakukan swipe ke kiri pada view pager
+    - Klik Tablayout dengan teks Movies
+    - Klik TabLayout dengan teks Tv Show
+    - Memastikan rv_home_tv dalam keadaan tampil
+    - Gulir rv_home_tv ke posisi data ke 15
+    - Melakukan swipe ke kanan pada view pager
+
+2. Menampilkan detail movie
+    - Memastikan rv_home_movie dalam keadaan tampil
+    - Gulir rv_home_movie ke posisi data ke 15
+    - Memberi tindakan klik pada data ke 15 di rv_home_movie
+    - Memastikan ImageView untuk poster tampil sesuai yang diharapkan
+    - Memastikan TextView untuk title tampil sesuai yang diharapkan
+    - Memastikan TextView untuk date tampil sesuai yang diharapkan
+    - Memastikan TextView untuk rating tampil sesuai yang diharapkan
+    - Memberi tindakan klik kembali
     - Melakukan swipe ke kiri pada view pager
     - Klik Tablayout dengan teks Movies
 
-2. Menampilkan data Tv Show
+3. Menampilkan detail tv
     - Klik TabLayout dengan teks Tv Show
     - Memastikan rv_home_tv dalam keadaan tampil
-    - Gulir rv_home_tv ke posisi data ke 10
+    - Gulir rv_home_tv ke posisi data ke 15
+    - Memberi tindakan klik pada data ke 15 di rv_home_tv
+    - Memastikan ImageView untuk poster tampil sesuai yang diharapkan
+    - Memastikan TextView untuk title tampil sesuai yang diharapkan
+    - Memastikan TextView untuk date tampil sesuai yang diharapkan
+    - Memastikan TextView untuk rating tampil sesuai yang diharapkan
+    - Memberi tindakan klik kembali
     - Melakukan swipe ke kanan pada view pager
 
-3. Menampilkan data detail movie
+4. Menampilkan Favorite Movie dan Tv
+    - Klik list_favorite pada action bar
+    - Memastikan rv_home_movie dalam keadaan tampil
+    - Melakukan swipe ke kiri pada view pager favorite
+    - Memastikan rv_home_tv dalam keadaan tampil
+    - Melakukan swipe ke kanan pada view pager
+    - Memastikan rv_home_movie dalam keadaan tampil
+    - Klik TabLayout dengan teks Tv Show
+    - Memastikan rv_home_tv dalam keadaan tampil
+    - Klik Tablayout dengan teks Movies
+    - Memberi tindakan klik kembali
+
+5. Tambah atau Hapus Movie Favorite
+    - Klik list_favorite pada action bar
+    - Memastikan rv_home_movie dalam keadaan tampil
+    - Memberi tindakan klik kembali
     - Memastikan rv_home_movie dalam keadaan tampil
     - Gulir rv_home_movie ke posisi data ke 10
     - Memberi tindakan klik pada data ke 10 di rv_home_movie
-    - Memastikan ImageView untuk poster tampil sesuai yang diharapkan
-    - Memastikan TextView untuk title tampil sesuai yang diharapkan
-    - Memastikan TextView untuk date tampil sesuai yang diharapkan
-    - Memastikan TextView untuk rating tampil sesuai yang diharapkan
+    - Memberi tindakan klik favorit
+    - Memberi tindakan klik kembali
+    - Klik list_favorite pada action bar
+    - Memastikan rv_home_movie dalam keadaan tampil
+
+6. Tambah atau Hapus Tv Favorite
+    - Klik list_favorite pada action bar
+    - Melakukan swipe ke kiri pada view pager favorite
+    - Memastikan rv_home_tv dalam keadaan tampil
     - Memberi tindakan klik kembali
     - Melakukan swipe ke kiri pada view pager
-    - Klik Tablayout dengan teks Movies
-
-4. Menampilkan data detail tv
-    - Klik TabLayout dengan teks Tv Show
     - Memastikan rv_home_tv dalam keadaan tampil
     - Gulir rv_home_tv ke posisi data ke 10
     - Memberi tindakan klik pada data ke 10 di rv_home_tv
-    - Memastikan ImageView untuk poster tampil sesuai yang diharapkan
-    - Memastikan TextView untuk title tampil sesuai yang diharapkan
-    - Memastikan TextView untuk date tampil sesuai yang diharapkan
-    - Memastikan TextView untuk rating tampil sesuai yang diharapkan
+    - Memberi tindakan klik favorit
     - Memberi tindakan klik kembali
-    - Melakukan swipe ke kanan pada view pager
+    - Klik list_favorite pada action bar
+    - Melakukan swipe ke kiri pada view pager favorite
+    - Memastikan rv_home_tv dalam keadaan tampil
+
+7. Urutkan Movie
+    - Memastikan rv_home_movie dalam keadaan tampil
+    - Gulir rv_home_movie ke posisi data ke 15
+    - Klik overflow option menu
+    - Klik teks menu Oldest
+    - Gulir rv_home_movie ke posisi data ke 5
+    - Gulir rv_home_movie ke posisi data ke 15
+    - Klik overflow option menu
+    - Klik teks menu Character
+    - Gulir rv_home_movie ke posisi data ke 5
+    - Gulir rv_home_movie ke posisi data ke 15
+    - Melakukan swipe ke kiri pada view pager
+    - Klik Tablayout dengan teks Movies
+
+8. Urutkan Tv Show
+    - Melakukan swipe ke kiri pada view pager
+    - Memastikan rv_home_tv dalam keadaan tampil
+    - Gulir rv_home_tv ke posisi data ke 15
+    - Klik overflow option menu
+    - Klik teks menu Oldest
+    - Gulir rv_home_tv ke posisi data ke 5
+    - Gulir rv_home_tv ke posisi data ke 15
+    - Klik overflow option menu
+    - Klik teks menu Character
+    - Gulir rv_home_movie ke posisi data ke 5
+    - Gulir rv_home_movie ke posisi data ke 15
+    - Klik Tablayout dengan teks Movies
+
+9. Cari Movie
+    - Memastikan rv_home_movie dalam keadaan tampil
+    - Gulir rv_home_movie ke posisi data ke 20
+    - Klik sv_movie untuk melakukan pencairan
+    - Melakukan ketik text justice pada sv_movie
+    - Memastikan rv_home_movie dalam keadaan tampil
+
+10. Cari Tv
+    - Melakukan swipe ke kiri pada view pager
+    - Memastikan rv_home_tv dalam keadaan tampil
+    - Gulir rv_home_tv ke posisi data ke 20
+    - Klik sv_tv untuk melakukan pencairan
+    - Melakukan ketik text doctor pada sv_tv
+    - Memastikan rv_home_tv dalam keadaan tampil

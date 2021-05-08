@@ -16,6 +16,7 @@ import com.aemiralfath.moviecatalogue.ui.utils.PagedListUtil
 import com.aemiralfath.moviecatalogue.utils.AppExecutors
 import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.aemiralfath.moviecatalogue.utils.LiveDataTestUtil
+import com.aemiralfath.moviecatalogue.utils.SortUtils
 import com.aemiralfath.moviecatalogue.vo.Resource
 import com.aemiralfath.moviecatalogue.vo.Status
 import com.nhaarman.mockitokotlin2.verify
@@ -87,7 +88,7 @@ class MovieRepositoryTest {
         val dataSourceFactory =
             Mockito.mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>?
         `when`(local.getAllMovies()).thenReturn(dataSourceFactory)
-        movieRepository.getAllMovies()
+        movieRepository.getAllMovies(SortUtils.NEWEST, "")
 
         val movieEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.loadMovie(context)))
@@ -101,7 +102,7 @@ class MovieRepositoryTest {
         val dataSourceFactory =
             Mockito.mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvEntity>?
         `when`(local.getAllTv()).thenReturn(dataSourceFactory)
-        movieRepository.getAllTv()
+        movieRepository.getAllTv(SortUtils.NEWEST, "")
 
         val tvEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.loadTv(context)))
         verify(local).getAllTv()

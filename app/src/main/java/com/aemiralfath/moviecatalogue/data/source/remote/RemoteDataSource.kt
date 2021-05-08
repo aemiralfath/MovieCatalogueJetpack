@@ -29,13 +29,12 @@ class RemoteDataSource(private val client: ServiceClient) {
                     response: Response<MovieResponse>
                 ) {
                     Log.d("MovieGet", response.body().toString())
-                    response.body()?.let {
-                        resultMovie.value = ApiResponse.success(it)
-
-                        if (it.totalResults == 0) {
-                            resultMovie.value = ApiResponse.empty("Empty List", it)
-                        }
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultMovie.value = ApiResponse.success(it) }
+                    } else {
+                        resultMovie.value = ApiResponse.empty("Empty List", null)
                     }
+
                     EspressoIdlingResource.decrement()
                 }
 
@@ -57,12 +56,10 @@ class RemoteDataSource(private val client: ServiceClient) {
             .enqueue(object : Callback<TvResponse> {
                 override fun onResponse(call: Call<TvResponse>, response: Response<TvResponse>) {
                     Log.d("TvGet", response.body().toString())
-                    response.body()?.let {
-                        resultTv.value = ApiResponse.success(it)
-
-                        if (it.totalResults == 0) {
-                            resultTv.value = ApiResponse.empty("Empty List", it)
-                        }
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultTv.value = ApiResponse.success(it) }
+                    } else {
+                        resultTv.value = ApiResponse.empty("Empty List", null)
                     }
                     EspressoIdlingResource.decrement()
                 }
@@ -88,12 +85,10 @@ class RemoteDataSource(private val client: ServiceClient) {
                     response: Response<MovieResponse>
                 ) {
                     Log.d("MovieGet", response.body().toString())
-                    response.body()?.let {
-                        resultMovie.value = ApiResponse.success(it)
-
-                        if (it.totalResults == 0) {
-                            resultMovie.value = ApiResponse.empty("Empty List", it)
-                        }
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultMovie.value = ApiResponse.success(it) }
+                    } else {
+                        resultMovie.value = ApiResponse.empty("Empty List", null)
                     }
                     EspressoIdlingResource.decrement()
                 }
@@ -116,12 +111,10 @@ class RemoteDataSource(private val client: ServiceClient) {
             .enqueue(object : Callback<TvResponse> {
                 override fun onResponse(call: Call<TvResponse>, response: Response<TvResponse>) {
                     Log.d("TvGet", response.body().toString())
-                    response.body()?.let {
-                        resultTv.value = ApiResponse.success(it)
-
-                        if (it.totalResults == 0) {
-                            resultTv.value = ApiResponse.empty("Empty List", it)
-                        }
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultTv.value = ApiResponse.success(it) }
+                    } else {
+                        resultTv.value = ApiResponse.empty("Empty List", null)
                     }
                     EspressoIdlingResource.decrement()
                 }
@@ -147,8 +140,10 @@ class RemoteDataSource(private val client: ServiceClient) {
                     response: Response<DetailMovieResponse>
                 ) {
                     Log.d("MovieGet", response.body().toString())
-                    response.body()?.let {
-                        resultDetailMovie.value = ApiResponse.success(it)
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultDetailMovie.value = ApiResponse.success(it) }
+                    } else {
+                        resultDetailMovie.value = ApiResponse.empty("Empty", null)
                     }
                     EspressoIdlingResource.decrement()
                 }
@@ -174,8 +169,10 @@ class RemoteDataSource(private val client: ServiceClient) {
                     response: Response<DetailTvResponse>
                 ) {
                     Log.d("TvGet", response.body().toString())
-                    response.body()?.let {
-                        resultDetailTv.value = ApiResponse.success(it)
+                    if (response.isSuccessful) {
+                        response.body()?.let { resultDetailTv.value = ApiResponse.success(it) }
+                    } else {
+                        resultDetailTv.value = ApiResponse.empty("Empty", null)
                     }
                     EspressoIdlingResource.decrement()
                 }

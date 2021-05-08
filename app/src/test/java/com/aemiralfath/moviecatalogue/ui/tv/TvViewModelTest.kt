@@ -9,6 +9,7 @@ import androidx.paging.PagedList
 import androidx.test.core.app.ApplicationProvider
 import com.aemiralfath.moviecatalogue.data.MainRepository
 import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
+import com.aemiralfath.moviecatalogue.utils.SortUtils
 import com.aemiralfath.moviecatalogue.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
@@ -30,6 +31,8 @@ class TvViewModelTest {
 
     private lateinit var viewModel: TvViewModel
     private lateinit var context: Context
+    private lateinit var query: String
+    private lateinit var sort: String
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -53,6 +56,8 @@ class TvViewModelTest {
     fun setUp() {
         viewModel = TvViewModel(movieRepository)
         context = ApplicationProvider.getApplicationContext()
+        query = ""
+        sort = SortUtils.NEWEST
     }
 
     @Test
@@ -63,14 +68,14 @@ class TvViewModelTest {
         val tv = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tv.value = dummyTv
 
-        `when`(movieRepository.getAllTv()).thenReturn(tv)
-        val tvEntities = viewModel.getTv().value?.data
-        verify(movieRepository).getAllTv()
+        `when`(movieRepository.getAllTv(sort, query)).thenReturn(tv)
+        val tvEntities = viewModel.getTv(sort, query).value?.data
+        verify(movieRepository).getAllTv(sort, query)
 
         assertNotNull(tvEntities)
         assertEquals(20, tvEntities?.size)
 
-        viewModel.getTv().observeForever(observer)
+        viewModel.getTv(sort, query).observeForever(observer)
         verify(observer).onChanged(dummyTv)
     }
 
@@ -101,13 +106,13 @@ class TvViewModelTest {
         val tv = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tv.value = dummyTv
 
-        `when`(movieRepository.getAllTv()).thenReturn(tv)
-        val tvEntities = viewModel.getTv().value?.data
-        verify(movieRepository).getAllTv()
+        `when`(movieRepository.getAllTv(sort, query)).thenReturn(tv)
+        val tvEntities = viewModel.getTv(sort, query).value?.data
+        verify(movieRepository).getAllTv(sort, query)
         assertNotNull(tvEntities)
         assertEquals(0, tvEntities?.size)
 
-        viewModel.getTv().observeForever(observer)
+        viewModel.getTv(sort, query).observeForever(observer)
         verify(observer).onChanged(dummyTv)
     }
 
@@ -118,14 +123,13 @@ class TvViewModelTest {
         val tv = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tv.value = dummyTv
 
-        `when`(movieRepository.getAllTv()).thenReturn(tv)
-        val tvEntities = viewModel.getTv().value
-        verify(movieRepository).getAllTv()
+        `when`(movieRepository.getAllTv(sort, query)).thenReturn(tv)
+        val tvEntities = viewModel.getTv(sort, query).value
 
         assertNotNull(tvEntities)
         assertEquals("fail", tvEntities?.message)
 
-        viewModel.getTv().observeForever(observer)
+        viewModel.getTv(sort, query).observeForever(observer)
         verify(observer).onChanged(dummyTv)
     }
 }

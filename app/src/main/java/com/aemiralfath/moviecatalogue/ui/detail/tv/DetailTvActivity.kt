@@ -36,7 +36,7 @@ class DetailTvActivity : AppCompatActivity() {
         binding = ActivityDetailTvBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        id = intent.getParcelableExtra<TvEntity>(EXTRA_TV)?.id
+        id = intent.getIntExtra(EXTRA_TV, 0)
 
         id?.let {
             viewModel.getTv(it).observe(this, { tv ->

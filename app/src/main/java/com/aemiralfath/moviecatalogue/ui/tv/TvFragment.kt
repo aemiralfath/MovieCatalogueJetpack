@@ -85,7 +85,7 @@ class TvFragment : Fragment() {
                         requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
                     svTv.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
                     svTv.isActivated = true
-                    svTv.queryHint = resources.getString(R.string.search_movie)
+                    svTv.queryHint = resources.getString(R.string.search_tv)
                     svTv.onActionViewExpanded()
                     svTv.isIconified = false
                     svTv.clearFocus()

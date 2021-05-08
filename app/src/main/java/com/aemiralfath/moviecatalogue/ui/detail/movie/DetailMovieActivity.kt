@@ -35,7 +35,7 @@ class DetailMovieActivity : AppCompatActivity() {
         binding = ActivityDetailMovieBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        id = intent.getParcelableExtra<MovieEntity>(EXTRA_MOVIE)?.id
+        id = intent.getIntExtra(EXTRA_MOVIE, 0)
 
         id?.let {
             viewModel.getMovie(it).observe(this, { movie ->

@@ -24,7 +24,7 @@ buildscript {
         annotationVersion = '10.0-b28'
 
         roboelectricVersion = '4.4'
-        mockitoVersion = '3.6.0'
+        mockitoVersion = '3.9.0'
         mockitoKotlinVersion = '2.2.0'
         espressoIdlingVersion = '3.3.0'
 

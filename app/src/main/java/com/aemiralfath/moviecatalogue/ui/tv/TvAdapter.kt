@@ -61,7 +61,7 @@ class TvAdapter : PagedListAdapter<TvEntity, TvAdapter.TvViewHolder>(DIFF_CALLBA
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailTvActivity::class.java)
-                    intent.putExtra(DetailTvActivity.EXTRA_TV, tv)
+                    intent.putExtra(DetailTvActivity.EXTRA_TV, tv.id)
                     itemView.context.startActivity(intent)
                 }
             }
