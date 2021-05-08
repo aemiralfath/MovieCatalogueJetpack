@@ -14,7 +14,6 @@ import com.aemiralfath.moviecatalogue.data.source.remote.response.MovieResponse
 import com.aemiralfath.moviecatalogue.data.source.remote.response.TvResponse
 import com.aemiralfath.moviecatalogue.utils.AppExecutors
 import com.aemiralfath.moviecatalogue.utils.SearchUtils
-import com.aemiralfath.moviecatalogue.utils.SortUtils
 import com.aemiralfath.moviecatalogue.vo.Resource
 
 class FakeMainRepository(

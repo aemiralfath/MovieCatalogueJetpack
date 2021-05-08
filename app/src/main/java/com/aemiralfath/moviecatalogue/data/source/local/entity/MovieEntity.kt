@@ -34,9 +34,9 @@ data class MovieEntity(
     var favorite: Boolean = false,
 
     var homepage: Boolean = false
-) : Parcelable{
+) : Parcelable {
 
-    companion object{
+    companion object {
         const val TABLE_NAME = "MovieEntities"
     }
 

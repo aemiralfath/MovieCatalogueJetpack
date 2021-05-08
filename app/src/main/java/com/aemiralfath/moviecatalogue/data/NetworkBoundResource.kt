@@ -73,6 +73,8 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val executo
                 }
             }
         }
+
+        executors.networkIO()
     }
 
 }
