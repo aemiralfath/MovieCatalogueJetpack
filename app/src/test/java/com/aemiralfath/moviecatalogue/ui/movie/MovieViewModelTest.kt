@@ -71,6 +71,7 @@ class MovieViewModelTest {
         `when`(movieRepository.getAllMovies(sort, query)).thenReturn(movies)
         val movieEntities = viewModel.getMovie(sort, query).value?.data
         verify(movieRepository).getAllMovies(sort, query)
+
         assertNotNull(movieEntities)
         assertEquals(20, movieEntities?.size)
 

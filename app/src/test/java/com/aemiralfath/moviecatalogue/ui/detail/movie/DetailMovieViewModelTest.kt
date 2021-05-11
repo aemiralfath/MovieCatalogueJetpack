@@ -11,7 +11,9 @@ import com.aemiralfath.moviecatalogue.data.source.local.entity.MovieEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.aemiralfath.moviecatalogue.vo.Resource
 import com.aemiralfath.moviecatalogue.vo.Status
+import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -55,12 +57,12 @@ class DetailMovieViewModelTest {
     @Test
     fun getMovie() {
         val response = Resource(Status.SUCCESS, dummyMovie, "success")
-
         val movie = MutableLiveData<Resource<MovieEntity>>()
         movie.postValue(response)
 
         val id: Int = dummyMovie.id
         `when`(movieRepository.getMovie(id)).thenReturn(movie)
+
         val movieEntity = viewModel.getMovie(id).value
         verify(movieRepository).getMovie(id)
 
@@ -79,24 +81,11 @@ class DetailMovieViewModelTest {
 
     @Test
     fun setFavorite() {
-        val response = Resource(Status.SUCCESS, dummyMovie, "success")
-        val movie = MutableLiveData<Resource<MovieEntity>>()
+        val movieEntity = dummyMovie
+        doNothing().`when`(movieRepository).setMovieFavorite(dummyMovie, !dummyMovie.favorite)
 
-        movie.postValue(response)
-        movieRepository.setMovieFavorite(dummyMovie, true)
-
-        val id: Int = dummyMovie.id
-        `when`(movieRepository.getMovie(id)).thenReturn(movie)
-
-        val movieEntity = viewModel.getMovie(id).value
-        verify(movieRepository).getMovie(id)
-
-        dummyMovie.favorite = true
-        assertNotNull(movieEntity)
-        assertEquals(dummyMovie.id, movieEntity?.data?.id)
-        assertEquals(dummyMovie.favorite, movieEntity?.data?.favorite)
-
-        viewModel.getMovie(id).observeForever(observer)
-        verify(observer).onChanged(response)
+        viewModel.setFavorite(movieEntity)
+        verify(movieRepository).setMovieFavorite(dummyMovie, !dummyMovie.favorite)
+        verifyNoMoreInteractions(observer)
     }
 }

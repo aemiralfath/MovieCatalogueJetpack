@@ -19,7 +19,9 @@ import com.aemiralfath.moviecatalogue.utils.LiveDataTestUtil
 import com.aemiralfath.moviecatalogue.utils.SortUtils
 import com.aemiralfath.moviecatalogue.vo.Resource
 import com.aemiralfath.moviecatalogue.vo.Status
+import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
@@ -182,43 +184,21 @@ class MovieRepositoryTest {
     @Test
     fun setMovieFavorite() {
         val dummyMovie = DataDummy.loadMovie(context)[0]
-        val movie = MutableLiveData<MovieEntity>()
+        doNothing().`when`(local).setFavoriteMovie(dummyMovie, !dummyMovie.favorite)
 
-        movie.value = dummyMovie
-        local.setFavoriteMovie(dummyMovie, true)
-
-        `when`(local.getMovieById(dummyMovie.id)).thenReturn(movie)
-
-        val movieEntity =
-            LiveDataTestUtil.getValue(movieRepository.getMovie(dummyMovie.id))
-        verify(local).getMovieById(dummyMovie.id)
-
-
-        dummyMovie.favorite = true
-        assertNotNull(movieEntity)
-        assertEquals(dummyMovie.id, movieEntity.data?.id)
-        assertEquals(dummyMovie.favorite, movieEntity.data?.favorite)
+        movieRepository.setMovieFavorite(dummyMovie, !dummyMovie.favorite)
+        verify(local).setFavoriteMovie(dummyMovie, !dummyMovie.favorite)
+        verifyNoMoreInteractions(local)
     }
 
     @Test
     fun setTvFavorite() {
         val dummyTv = DataDummy.loadTv(context)[0]
-        val tv = MutableLiveData<TvEntity>()
+        doNothing().`when`(local).setFavoriteTv(dummyTv, !dummyTv.favorite)
 
-        tv.value = dummyTv
-        local.setFavoriteTv(dummyTv, true)
-
-        `when`(local.getTvById(dummyTv.id)).thenReturn(tv)
-
-        val tvEntity =
-            LiveDataTestUtil.getValue(movieRepository.getTv(dummyTv.id))
-        verify(local).getTvById(dummyTv.id)
-
-
-        dummyTv.favorite = true
-        assertNotNull(tvEntity)
-        assertEquals(dummyTv.id, tvEntity.data?.id)
-        assertEquals(dummyTv.favorite, tvEntity.data?.favorite)
+        movieRepository.setTvFavorite(dummyTv, !dummyTv.favorite)
+        verify(local).setFavoriteTv(dummyTv, !dummyTv.favorite)
+        verifyNoMoreInteractions(local)
     }
 
 }

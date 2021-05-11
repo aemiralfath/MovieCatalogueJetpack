@@ -109,6 +109,7 @@ class TvViewModelTest {
         `when`(movieRepository.getAllTv(sort, query)).thenReturn(tv)
         val tvEntities = viewModel.getTv(sort, query).value?.data
         verify(movieRepository).getAllTv(sort, query)
+
         assertNotNull(tvEntities)
         assertEquals(0, tvEntities?.size)
 

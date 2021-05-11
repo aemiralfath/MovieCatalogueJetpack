@@ -11,7 +11,9 @@ import com.aemiralfath.moviecatalogue.data.source.local.entity.TvEntity
 import com.aemiralfath.moviecatalogue.utils.DataDummy
 import com.aemiralfath.moviecatalogue.vo.Resource
 import com.aemiralfath.moviecatalogue.vo.Status
+import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -55,12 +57,12 @@ class DetailTvViewModelTest {
     @Test
     fun getTv() {
         val response = Resource(Status.SUCCESS, dummyTv, "success")
-
         val tv = MutableLiveData<Resource<TvEntity>>()
         tv.postValue(response)
 
         val id: Int = dummyTv.id
         `when`(movieRepository.getTv(id)).thenReturn(tv)
+
         val tvEntity = viewModel.getTv(id).value
         verify(movieRepository).getTv(id)
 
@@ -79,24 +81,11 @@ class DetailTvViewModelTest {
 
     @Test
     fun setFavorite() {
-        val response = Resource(Status.SUCCESS, dummyTv, "success")
-        val tv = MutableLiveData<Resource<TvEntity>>()
+        val tvEntity = dummyTv
+        doNothing().`when`(movieRepository).setTvFavorite(dummyTv, !dummyTv.favorite)
 
-        tv.postValue(response)
-        movieRepository.setTvFavorite(dummyTv, true)
-
-        val id: Int = dummyTv.id
-        `when`(movieRepository.getTv(id)).thenReturn(tv)
-
-        val tvEntity = viewModel.getTv(id).value
-        verify(movieRepository).getTv(id)
-
-        dummyTv.favorite = true
-        assertNotNull(tvEntity)
-        assertEquals(dummyTv.id, tvEntity?.data?.id)
-        assertEquals(dummyTv.favorite, tvEntity?.data?.favorite)
-
-        viewModel.getTv(id).observeForever(observer)
-        verify(observer).onChanged(response)
+        viewModel.setFavorite(tvEntity)
+        verify(movieRepository).setTvFavorite(dummyTv, !dummyTv.favorite)
+        verifyNoMoreInteractions(observer)
     }
 }
